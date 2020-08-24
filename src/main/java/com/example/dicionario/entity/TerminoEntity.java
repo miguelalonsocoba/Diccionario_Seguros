@@ -13,7 +13,7 @@ import lombok.Setter;
 /**
  * Entity Termino.
  */
-@Entity
+@Entity(name = "terminos")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,15 +23,15 @@ public class TerminoEntity {
 	/** The id. */
 	@Id
 	@GeneratedValue
-	@Column(name = "ID_TERMINO")
+	@Column(name = "ID")
 	private int id;
 	
 	/** The nombre del termino. */
-	@Column(name = "NOMBRE_TERMINO", nullable = false)
+	@Column(name = "NOMBRE_TERMINO")
 	private String nombreTermino;
 	
 	/** The descripcion. */
-	@Column(name = "DESCRIPCION", nullable = false)
+	@Column(name = "DESCRIPCION")
 	private String descripcion;
 	
 	/** The ejemplo. */
