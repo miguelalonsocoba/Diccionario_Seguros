@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class TerminoDTO.
  */
+@ToString
 @Getter
 @Setter
 @NoArgsConstructor
