@@ -1,10 +1,11 @@
 package com.example.dicionario.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,12 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dicionario.constants.Constants;
 import com.example.dicionario.dto.TerminoDTO;
-import com.example.dicionario.exceptions.ParameterException;
 import com.example.dicionario.exceptions.ProxyException;
 import com.example.dicionario.service.IDiccionarioService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -29,6 +33,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping(path = "/diccionario")
+@Api(value = "diccionario", description = "Operaciones CRUD de Diccionario")
+@ApiOperation(value = "Consultar, Insertar, Actualizar y Eliminar Terminos del Diccionario", notes = "")
 public class DiccionarioController {
 
 	/** The service. */
@@ -46,6 +52,12 @@ public class DiccionarioController {
 	 * @param idTermino of Integer
 	 * @return Object String
 	 */
+	@ApiOperation(code = Constants.STATUSOK, value = "Busca un termino en base a su ID.", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = Constants.STATUSOK, message = "Consulta exitosa", response = TerminoDTO.class),
+			@ApiResponse(code = 400, message = "Conflicto interno en el proceso"),
+			@ApiResponse(code = 503, message = "Servicio no Disponible"),
+			@ApiResponse(code = 500, message = "Conflictos en el servidor") })
 	@GetMapping(path = "/getTermino", produces = "application/json")
 	public String getTerminoID(@RequestParam(name = "idTermino") final Integer idTermino) {
 		log.info(String.format("getTerminoID() >>>>>> idTermino: %s", idTermino));
@@ -65,16 +77,17 @@ public class DiccionarioController {
 	 * @param request of String
 	 * @return Object String
 	 */
+	@ApiOperation(code = Constants.STATUSOK, value = "Agrega un Termino.", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = Constants.STATUSOK, message = "Consulta exitosa", response = TerminoDTO.class),
+			@ApiResponse(code = 400, message = "Conflicto interno en el proceso."),
+			@ApiResponse(code = 503, message = "Servicio no Disponible."),
+			@ApiResponse(code = 500, message = "Conflictos con el servidor.") })
 	@PostMapping(path = "/addTermino", consumes = "application/json", produces = "application/json")
-	public String addTermino(@RequestBody final String request) {
+	public String addTermino(@Validated @RequestBody final TerminoDTO request) {
 		log.info(String.format("addTermino() >>>>>>> request: %s", request));
 		try {
-			TerminoDTO objRequest = oMapper.readValue(request, TerminoDTO.class);
-			if (null == objRequest) {
-				log.error(String.format("ParameterException: %s", Constants.ERROR_JSON_FORMATO));
-				throw new ParameterException(Constants.ERROR_JSON_FORMATO);
-			}
-			TerminoDTO response = serviceDiccionario.addTermino(objRequest);
+			TerminoDTO response = serviceDiccionario.addTermino(request);
 			log.info(String.format("addTermino() <<<<<<<< response: %s", response.toString()));
 			return oMapper.writeValueAsString(response);
 		} catch (JsonProcessingException e) {
@@ -90,6 +103,12 @@ public class DiccionarioController {
 	 * @return String response
 	 * @throws Exception
 	 */
+	@ApiOperation(code = Constants.STATUSOK, value = "Elimina un Termino.")
+	@ApiResponses(value = {
+			@ApiResponse(code = Constants.STATUSOK, message = "Consulta exitosa.", response = String.class),
+			@ApiResponse(code = 400, message = "Conflicto interno en el proceso."),
+			@ApiResponse(code = 503, message = "Servicio no Disponible."),
+			@ApiResponse(code = 500, message = "Conflictos con el servidor.") })
 	@DeleteMapping(path = "/deletTermino", produces = "application/json")
 	public String deletTermino(@RequestParam(name = "id") final Integer id) throws Exception {
 		log.info(String.format("deletTermino() >>>>> request: %s", id));
@@ -108,11 +127,16 @@ public class DiccionarioController {
 	 * 
 	 * @return List Object String
 	 */
+	@ApiOperation(value = "Obtiene la lista de los Terminos.", notes = "Retorn una lista de Terminos")
+	@ApiResponses(value = {
+			@ApiResponse(code = Constants.STATUSOK, message = "Consulta exitosa.", response = TerminoDTO.class, responseContainer = "List"),
+			@ApiResponse(code = 400, message = "Conflicto interno en el proceso."),
+			@ApiResponse(code = 503, message = "Servicio no Disponible."),
+			@ApiResponse(code = 500, message = "Conflictos con el servidor.") })
 	@GetMapping(path = "/getAll", produces = "application/json")
 	public List<TerminoDTO> getAll() {
 		log.info("getAll() >>>>> ");
-		List<TerminoDTO> response = new ArrayList<>();
-		response = serviceDiccionario.listAll();
+		List<TerminoDTO> response = serviceDiccionario.listAll();
 		log.info("getAll() <<<<<");
 		return response;
 	}

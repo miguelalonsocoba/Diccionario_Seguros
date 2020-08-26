@@ -46,7 +46,7 @@ public class SwaggerConfig {
 	@SuppressWarnings("rawtypes")
 	private static ApiInfo metaData() {
 		Collection<VendorExtension> vendors = new ArrayList<>();
-		vendors.add(new StringVendorExtension("GNP", "Grupo Nacional Provincial"));
+		vendors.add(new StringVendorExtension("MAC", "MAC"));
 		return new ApiInfo("DiccionarioSeguros", "Aplicacion de un deccionario de Empresa de Seguros", "1.0",
 				"URL de Terminos de servicio",
 				new Contact("COM", "https://github.com/miguelalonsocoba/Diccionario_Seguros.git", ""),
