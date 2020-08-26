@@ -13,7 +13,23 @@ spring:  datasource:
     show-sql: true
   banner:
     location: classpath:banner.txt
+  output:    ansi:      enabled: ALWAYS
+      
+# INFO Actuator.
+management:
+  endpoints:
+    web:
+      base-path: /management
+  endpoint:
+    env:
+      enabled: true
+    logfile:
+      enabled: true
     
 #LOGGING
 logging: 
-  file:    path: C:/LOGS
+  file:    path: C:/LOGS/DiccionarioSeguros
+    #Propiedad para definir el tamaño de archivo que almacena los LOGS.
+    #max-size:
+#trace: true
+#debug: true
