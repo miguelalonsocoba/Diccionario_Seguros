@@ -39,4 +39,21 @@ public interface IDiccionarioService {
 	 */
 	List<TerminoDTO> listAll();
 
+	/**
+	 * Obtener un termino en base a su nombre.
+	 * 
+	 * @param termino de String
+	 * @return list TerminoDTO
+	 */
+	List<TerminoDTO> getTerminoByNombre(String termino);
+
+	/**
+	 * Actualizar información del Termino.
+	 * 
+	 * @param termino of Termino
+	 * @return object TErminoDTO
+	 * @throws Exception
+	 */
+	TerminoDTO updateTermino(TerminoDTO termino) throws Exception;
+
 }

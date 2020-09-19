@@ -65,6 +65,9 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 		return terminoDtoResponse;
 	}
 
+	/**
+	 * Elimina un termino a partir de un ID.
+	 */
 	@Override
 	public void deleteById(Integer id) {
 		log.info(String.format("deleteById() >>>>> id: %s", id));
@@ -92,6 +95,39 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 		}
 		log.info(String.format("listAll() <<<<< response: %s", "response"));
 		return responseTerminos;
+	}
+
+	@Override
+	public List<TerminoDTO> getTerminoByNombre(String termino) {
+		log.info("getTerminoByNombre() >>>>");
+		List<Termino> responseEntity = repository.findByNombreTermino(termino);
+		List<TerminoDTO> responsDtos = new ArrayList<>();
+		for (Termino terminoEntity : responseEntity) {
+			TerminoDTO responseDto = new TerminoDTO();
+			responseDto = converter.convertEntityToDto(terminoEntity);
+			responsDtos.add(responseDto);
+		}
+		log.debug(responseEntity.toString());
+		return responsDtos;
+	}
+
+	/**
+	 * Actualizar informacion de un Termino.
+	 * @throws Exception 
+	 */
+	@Override
+	public TerminoDTO updateTermino(TerminoDTO termino) throws Exception {
+		log.info("updateTermino >>>> request: %s", termino.toString());
+		List<Termino> existeTermino = repository.findByNombreTermino(termino.getNombreTermino());
+		
+		if (existeTermino.isEmpty()) {
+			log.error("Exception: %s", "El termino no existe");
+			throw new Exception(String.format("El termino %s no existe.", termino.getNombreTermino()));
+		}
+		
+		Termino response = repository.save(converter.convertDtoToEntity(termino));
+		log.info("updateTermino() <<<<< response: %s", response.toString());
+		return converter.convertEntityToDto(response);
 	}
 
 }

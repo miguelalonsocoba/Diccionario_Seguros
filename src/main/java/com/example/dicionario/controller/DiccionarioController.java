@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,7 +59,7 @@ public class DiccionarioController {
 			@ApiResponse(code = 400, message = "Conflicto interno en el proceso"),
 			@ApiResponse(code = 503, message = "Servicio no Disponible"),
 			@ApiResponse(code = 500, message = "Conflictos en el servidor") })
-	@GetMapping(path = "/getTermino", produces = "application/json")
+	@GetMapping(path = "/getTerminoById", produces = "application/json")
 	public String getTerminoID(@RequestParam(name = "idTermino") final Integer idTermino) {
 		log.info(String.format("getTerminoID() >>>>>> idTermino: %s", idTermino));
 		try {
@@ -139,6 +140,33 @@ public class DiccionarioController {
 		List<TerminoDTO> response = serviceDiccionario.listAll();
 		log.info("getAll() <<<<<");
 		return response;
+	}
+
+	@ApiOperation(value = "Obtiene termino(s)", notes = "Obtendra los terminos que coincidan con el valor que se pasa como parametro.")
+	@ApiResponses(value = {
+			@ApiResponse(code = Constants.STATUSOK, message = "Consulta exitosa.", response = TerminoDTO.class, responseContainer = "List"),
+			@ApiResponse(code = 400, message = "Conflicto interno en el proceso"),
+			@ApiResponse(code = 503, message = "Servicio no Disponible."),
+			@ApiResponse(code = 500, message = "Conflictos con el servidor.") })
+	@GetMapping(path = "getByTermino", produces = "application/json")
+	public List<TerminoDTO> getTerminoByName(@RequestParam(name = "termino") String termino) {
+		log.info("getTerminoByName() >>>> requestPAram: %s", termino);
+		List<TerminoDTO> response = serviceDiccionario.getTerminoByNombre(termino);
+		log.info("getTErminoNyName() <<<< response: %s", response.toString());
+		return response;
+	}
+
+	@ApiOperation(value = "Actualiza Termino", notes = "Actualiza la información de un Termino si este previamente existe.")
+	@ApiResponses({
+			@ApiResponse(code = Constants.STATUSOK, message = "Actualizacion exitosa", response = TerminoDTO.class),
+			@ApiResponse(code = 400, message = "Conflicto interno en el proceso."),
+			@ApiResponse(code = 500, message = "Conflicto con el servidor."),
+			@ApiResponse(code = 503, message = "Servicio no disponible.") })
+	@PutMapping(path = "updateTermino", produces = "application/json", consumes = "application/json")
+	public String updateTermino(@RequestBody TerminoDTO termino) throws Exception {
+		log.info("updateTermino() >>>>> request: %s", termino.toString());
+		TerminoDTO response = serviceDiccionario.updateTermino(termino);
+		return oMapper.writeValueAsString(response);
 	}
 
 }
