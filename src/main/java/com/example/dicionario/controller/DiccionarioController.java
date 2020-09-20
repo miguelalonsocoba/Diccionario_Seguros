@@ -156,7 +156,7 @@ public class DiccionarioController {
 		return response;
 	}
 
-	@ApiOperation(value = "Actualiza Termino", notes = "Actualiza la información de un Termino si este previamente existe.")
+	@ApiOperation(value = "Actualiza Termino", notes = "Actualiza la informacion de un Termino si este previamente existe.")
 	@ApiResponses({
 			@ApiResponse(code = Constants.STATUSOK, message = "Actualizacion exitosa", response = TerminoDTO.class),
 			@ApiResponse(code = 400, message = "Conflicto interno en el proceso."),

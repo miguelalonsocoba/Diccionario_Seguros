@@ -48,7 +48,7 @@ public interface IDiccionarioService {
 	List<TerminoDTO> getTerminoByNombre(String termino);
 
 	/**
-	 * Actualizar información del Termino.
+	 * Actualizar informacion del Termino.
 	 * 
 	 * @param termino of Termino
 	 * @return object TErminoDTO
