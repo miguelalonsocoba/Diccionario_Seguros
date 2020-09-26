@@ -66,8 +66,11 @@ public class DiccionarioController {
 			TerminoDTO termino = serviceDiccionario.getTerminoId(idTermino);
 			log.info(String.format("getTerminoID() <<<<<< termino: %s", termino.toString()));
 			return oMapper.writeValueAsString(termino);
+		} catch (ProxyException e) {
+			log.error(String.format("ProxyException: %s", e.getMessage()));
+			throw new ProxyException(String.format(Constants.ERROR_SERVICIO_DICCIONARIO_SEGUROS, e.getMessage()));
 		} catch (JsonProcessingException e) {
-			log.error(String.format("JsonProccesingException: %s", e.getMessage()));
+			log.error(String.format("JsonProcessingException: %s", e.getMessage()));
 			throw new ProxyException(String.format(Constants.ERROR_SERVICIO_DICCIONARIO_SEGUROS, e.getMessage()));
 		}
 	}
