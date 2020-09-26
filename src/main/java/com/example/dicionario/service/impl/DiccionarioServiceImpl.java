@@ -69,11 +69,12 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	 * Elimina un termino a partir de un ID.
 	 */
 	@Override
-	public void deleteById(Integer id) {
+	public String deleteById(Integer id) {
 		log.info(String.format("deleteById() >>>>> id: %s", id));
 		try {
 			repository.deleteById(id);
 			log.info(String.format("deleteById() <<<<< response: %s", "Correct"));
+			return "Success ok";
 		} catch (IllegalArgumentException e) {
 			log.error(String.format("IllegalArgumentException: %s", e.getMessage()));
 			throw new IllegalArgumentException("El id no existe. " + e.getMessage());

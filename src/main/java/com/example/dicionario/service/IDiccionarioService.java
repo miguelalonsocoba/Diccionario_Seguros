@@ -29,8 +29,9 @@ public interface IDiccionarioService {
 	 * Elimina un termino por ID.
 	 * 
 	 * @param id of Integer
+	 * @return object Stirng
 	 */
-	void deleteById(Integer id);
+	String deleteById(Integer id);
 
 	/**
 	 * Enlista todos los terminos.

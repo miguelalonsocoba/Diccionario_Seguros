@@ -117,9 +117,9 @@ public class DiccionarioController {
 	public String deletTermino(@RequestParam(name = "id") final Integer id) throws Exception {
 		log.info(String.format("deletTermino() >>>>> request: %s", id));
 		try {
-			serviceDiccionario.deleteById(id);
+			String response = serviceDiccionario.deleteById(id);
 			log.info(String.format("deletTermino() <<<<< response: %s", "response"));
-			return "Termino con id: " + id + " eliminado correctamente.";
+			return "Termino con id: " + id + " eliminado correctamente: " + response;
 		} catch (Exception e) {
 			log.info(String.format("Exception: %s", e.getMessage()));
 			throw new Exception(String.format("Controller: %s", e.getMessage()));
