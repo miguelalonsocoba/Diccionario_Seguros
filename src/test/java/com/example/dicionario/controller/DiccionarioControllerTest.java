@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -140,9 +143,10 @@ public class DiccionarioControllerTest {
 		verify(service).deleteById(idTermino);
 
 	}
-	
+
 	/**
-	 * Comprueba que retorna una respuesta esperada si ocurre un error de tipo Exception.
+	 * Comprueba que retorna una respuesta esperada si ocurre un error de tipo
+	 * Exception.
 	 */
 	@Test
 	public void deletTerminoTestErrorException() throws Exception {
@@ -153,7 +157,53 @@ public class DiccionarioControllerTest {
 		} catch (Exception e) {
 			assertEquals("Controller: Error", e.getMessage());
 		}
+
+	}
+
+	/**
+	 * Comprueba que retorna una lista de tipo TerminoDTO.
+	 */
+	@Test
+	public void getAllTestOk() {
+		List<TerminoDTO> responseList = new ArrayList<TerminoDTO>();
+		responseList.add(getResponse());
+		responseList.add(getResponse());
+		when(service.listAll()).thenReturn(responseList);
+
+		List<TerminoDTO> response = diccionarioController.getAll();
+
+		assertNotNull(response, "The list is null");
+	}
+
+	/**
+	 * Comprueba que el metodo se ejecute correctamente.
+	 */
+	@Test
+	public void getTerminoByNameTestOk() {
+		List<TerminoDTO> responseList = new ArrayList<>();
+		responseList.add(getResponse());
+		responseList.add(getResponse());
+		when(service.getTerminoByNombre(ArgumentMatchers.anyString())).thenReturn(responseList);
+		List<TerminoDTO> resposne = diccionarioController.getTerminoByName("GNP");
+		assertNotNull(resposne, "The list is null");
+	}
+
+	/**
+	 * Comprueba que el metodo retorna lo esperado.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void updateTerminoTestOk() throws Exception {
+		ObjectMapper oMapperWorker = new ObjectMapper();
+		when(service.updateTermino(getResponse())).thenReturn(getResponse());
+		when(oMapper.writeValueAsString(ArgumentMatchers.any()))
+				.thenReturn(oMapperWorker.writeValueAsString(getResponse()));
 		
+		String response = diccionarioController.updateTermino(getResponse());
+		
+		assertNotNull(response, "The object is null");
+
 	}
 
 	/**
