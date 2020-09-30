@@ -53,7 +53,7 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	}
 
 	/**
-	 * Agrega un termino.
+	 * Add Termino.
 	 */
 	@Override
 	public TerminoDTO addTermino(TerminoDTO terminoDto) {
@@ -98,6 +98,9 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 		return responseTerminos;
 	}
 
+	/**
+	 * Obtiene terminos que coincidan con el nombre indicado.
+	 */
 	@Override
 	public List<TerminoDTO> getTerminoByNombre(String termino) {
 		log.info("getTerminoByNombre() >>>>");

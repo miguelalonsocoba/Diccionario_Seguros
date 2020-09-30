@@ -22,6 +22,11 @@ public class ConvertTermino {
 	 */
 	public Termino convertDtoToEntity(TerminoDTO terminoDto) {
 		log.info(String.format("convertDtoToEntity() >>>>> terminoDto: %s", terminoDto.toString()));
+		if (terminoDto.getCategoria() == null || terminoDto.getDescripcion() == null || terminoDto.getEjemplo() == null
+				|| terminoDto.getNombreTermino() == null) {
+			log.error("Some TerminoDto attribute have null value: ");
+			throw new NullPointerException("Some attribute have null value.");
+		}
 		Termino terminoEntity = new Termino();
 		terminoEntity.setNombreTermino(terminoDto.getNombreTermino());
 		terminoEntity.setDescripcion(terminoDto.getDescripcion());
@@ -39,6 +44,12 @@ public class ConvertTermino {
 	 */
 	public TerminoDTO convertEntityToDto(Termino terminoEntity) {
 		log.info(String.format("convertEntityToDto() >>>>> terminoEntity: %s", terminoEntity.toString()));
+		if (terminoEntity.getCategoria() == null || terminoEntity.getDescripcion() == null
+				|| terminoEntity.getEjemplo() == null || terminoEntity.getId() == null
+				|| terminoEntity.getNombreTermino() == null) {
+			log.info("Some Termino attribute have null value");
+			throw new NullPointerException("Some Termino attribute have null value");
+		}
 		TerminoDTO terminoDTO = new TerminoDTO();
 		terminoDTO.setNombreTermino(terminoEntity.getNombreTermino());
 		terminoDTO.setDescripcion(terminoEntity.getDescripcion());
