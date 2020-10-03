@@ -115,6 +115,19 @@ public class DiccionarioControllerTest {
 	}
 
 	/**
+	 * Comprueba que regresa una Exception de tipo NullPointerException.
+	 */
+	@Test
+	public void getTerminoIdTestNullPointerException() {
+		try {
+			diccionarioController.getTerminoID(null);
+		} catch (NullPointerException e) {
+			assertEquals("The param idTermino es null: ", e.getMessage());
+		}
+
+	}
+
+	/**
 	 * Comprueba que el metodo retorna lo esperado y que no sea null.
 	 */
 	@Test
@@ -161,10 +174,26 @@ public class DiccionarioControllerTest {
 	}
 
 	/**
-	 * Comprueba que retorna una lista de tipo TerminoDTO.
+	 * Comprueba que regresa una Exception de tipo NullPointerException.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
-	public void getAllTestOk() {
+	public void deletTerminoTestExceptionNullPointerException() throws Exception {
+		try {
+			diccionarioController.deletTermino(null);
+		} catch (Exception e) {
+			assertEquals("Controller: El parametro id es null", e.getMessage());
+		}
+	}
+
+	/**
+	 * Comprueba que retorna una lista de tipo TerminoDTO.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void getAllTestOk() throws Exception {
 		List<TerminoDTO> responseList = new ArrayList<TerminoDTO>();
 		responseList.add(getResponse());
 		responseList.add(getResponse());
@@ -173,6 +202,20 @@ public class DiccionarioControllerTest {
 		List<TerminoDTO> response = diccionarioController.getAll();
 
 		assertNotNull(response, "The list is null");
+	}
+
+	/**
+	 * Comprueba que retorna una Exception.
+	 */
+	@Test
+	public void getAllTestException() {
+		try {
+			when(service.listAll()).thenThrow(new Exception("Error"));
+			diccionarioController.getAll();
+		} catch (Exception e) {
+			assertEquals("Error", e.getMessage());
+		}
+
 	}
 
 	/**
@@ -189,6 +232,19 @@ public class DiccionarioControllerTest {
 	}
 
 	/**
+	 * Comprueba que regresa una Exception de tipo NulPointerException.
+	 */
+	@Test
+	public void getTerminoByNameTestExceptionNullPointerException() {
+		try {
+			diccionarioController.getTerminoByName("");
+		} catch (NullPointerException e) {
+			assertEquals("EL parametro termino tienen un valor nulo", e.getMessage());
+		}
+
+	}
+
+	/**
 	 * Comprueba que el metodo retorna lo esperado.
 	 * 
 	 * @throws Exception
@@ -199,9 +255,9 @@ public class DiccionarioControllerTest {
 		when(service.updateTermino(getResponse())).thenReturn(getResponse());
 		when(oMapper.writeValueAsString(ArgumentMatchers.any()))
 				.thenReturn(oMapperWorker.writeValueAsString(getResponse()));
-		
+
 		String response = diccionarioController.updateTermino(getResponse());
-		
+
 		assertNotNull(response, "The object is null");
 
 	}

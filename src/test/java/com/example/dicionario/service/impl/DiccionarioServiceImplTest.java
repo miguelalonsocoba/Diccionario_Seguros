@@ -2,6 +2,7 @@ package com.example.dicionario.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class DiccionarioServiceImplTest {
 		}
 
 	}
-	
+
 	/**
 	 * Comprueba que el objeto no es null.
 	 */
@@ -105,12 +106,12 @@ public class DiccionarioServiceImplTest {
 		when(comverter.convertDtoToEntity(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(repository.save(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
-		
+
 		TerminoDTO response = diccionarioService.addTermino(getTerminoDTO());
-		
+
 		assertNotNull(response);
 	}
-	
+
 	/**
 	 * Comprueba que retorna el objeto esperado.
 	 */
@@ -119,36 +120,65 @@ public class DiccionarioServiceImplTest {
 		when(comverter.convertDtoToEntity(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(repository.save(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
-		
+
 		TerminoDTO response = diccionarioService.addTermino(getTerminoDTO());
-		
+
 		assertEquals(getTerminoDTO().getCategoria(), response.getCategoria(), "The params Categoria are not same");
-		assertEquals(getTerminoDTO().getDescripcion(), response.getDescripcion(), "The params Descripcion are not same");
+		assertEquals(getTerminoDTO().getDescripcion(), response.getDescripcion(),
+				"The params Descripcion are not same");
 		assertEquals(getTerminoDTO().getEjemplo(), response.getEjemplo(), "The params Ejemplo are not same");
-		assertEquals(getTerminoDTO().getNombreTermino(), response.getNombreTermino(), "The params NombreTermino are not same");
+		assertEquals(getTerminoDTO().getNombreTermino(), response.getNombreTermino(),
+				"The params NombreTermino are not same");
 	}
-	
+
+	/**
+	 * Comprueba que lanza una Exception de tipo IllegalArgumentException.
+	 */
+	@Test
+	public void addTerminoTestException() {
+		TerminoDTO request = getTerminoDTO();
+		request.setCategoria("");
+		try {
+			diccionarioService.addTermino(request);
+		} catch (IllegalArgumentException e) {
+			assertEquals("El parametro Categoria es obligatorio", e.getMessage());
+		}
+	}
+
 	/**
 	 * Comprueba que el response no sea nulo.
 	 */
 	@Test
 	public void deleteByIdTestResponseNotNull() {
-		
+
 		String response = diccionarioService.deleteById(3);
-		
+
 		assertNotNull(response, "The objecto is null");
 	}
-	
+
 	/**
 	 * Comprueba que el response se el esperado.
 	 */
 	@Test
 	public void deleteByIdTestResponseEsperado() {
 		String response = diccionarioService.deleteById(3);
-		
+
 		assertEquals("Success ok", response);
 	}
-	
+
+	/**
+	 * Comprueba que regresa una Exception de tipo IllegalArgumentException.
+	 */
+	@Test
+	public void deleteByIdTestExceptionIllegaArgumentsException() {
+		try {
+			diccionarioService.deleteById(30);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Message", e.getMessage());
+		}
+
+	}
+
 	/**
 	 * Comprueba que retorna una exception de tipo IllegalArgumentException.
 	 */
@@ -156,43 +186,47 @@ public class DiccionarioServiceImplTest {
 //	public void deleteByIdTestExceptionIllegalArgumentException() {
 //		
 //	}
-	
+
 	/**
 	 * Comprueba que el objeto retornado no es nulo.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
-	public void listAllTestNotull() {
+	public void listAllTestNotull() throws Exception {
 		List<Termino> response = new ArrayList<>();
 		response.add(getTermino());
 		response.add(getTermino());
-		
+
 		when(repository.findAll()).thenReturn(response);
 		when(comverter.convertEntityToDto(getTermino())).thenReturn(getTerminoDTO());
-		
+
 		List<TerminoDTO> responseList = diccionarioService.listAll();
-		
+
 		assertNotNull(responseList);
 	}
-	
+
 	/**
 	 * Comprueba que el respinse es el esperado.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
-	public void listAllTestResponseEsperado() {
+	public void listAllTestResponseEsperado() throws Exception {
 		List<Termino> response = new ArrayList<>();
 		response.add(getTermino());
-		
+
 		when(repository.findAll()).thenReturn(response);
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
-		
+
 		List<TerminoDTO> responseList = diccionarioService.listAll();
-		
+
 		assertEquals(getTerminoDTO().getCategoria(), responseList.get(0).getCategoria());
 		assertEquals(getTerminoDTO().getDescripcion(), responseList.get(0).getDescripcion());
 		assertEquals(getTerminoDTO().getEjemplo(), responseList.get(0).getEjemplo());
 		assertEquals(getTerminoDTO().getNombreTermino(), responseList.get(0).getNombreTermino());
 	}
-	
+
 	/**
 	 * Comprueba que el response no es nulo.
 	 */
@@ -202,12 +236,12 @@ public class DiccionarioServiceImplTest {
 		response.add(getTermino());
 		when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(response);
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
-		
+
 		List<TerminoDTO> responseList = diccionarioService.getTerminoByNombre(ArgumentMatchers.anyString());
-		
+
 		assertNotNull(responseList, "The object is null");
 	}
-	
+
 	/**
 	 * Comprueba que el response es el esperado.
 	 */
@@ -217,15 +251,30 @@ public class DiccionarioServiceImplTest {
 		response.add(getTermino());
 		when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(response);
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
-		
+
 		List<TerminoDTO> responseList = diccionarioService.getTerminoByNombre(ArgumentMatchers.anyString());
-		
+
 		assertEquals(getTerminoDTO().getCategoria(), responseList.get(0).getCategoria());
 		assertEquals(getTerminoDTO().getDescripcion(), responseList.get(0).getDescripcion());
 		assertEquals(getTerminoDTO().getEjemplo(), responseList.get(0).getEjemplo());
 		assertEquals(getTerminoDTO().getNombreTermino(), responseList.get(0).getNombreTermino());
 	}
-	
+
+	/**
+	 * Comprueba que regresa una Exception de termino NullPointerException.
+	 */
+	@Test
+	public void getTErminoByNombreTestResponseEntityNull() {
+		when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(new ArrayList<>());
+
+		try {
+			diccionarioService.getTerminoByNombre("Paulo");
+		} catch (NullPointerException e) {
+			System.err.println(e.getMessage());
+			assertEquals("El termino Paulo no existe en la base de datos.", e.getMessage());
+		}
+	}
+
 	/**
 	 * Comprueba que el response no es nulo.
 	 */
@@ -233,22 +282,21 @@ public class DiccionarioServiceImplTest {
 	public void updateTerminoTestObjectNotNull() {
 		List<Termino> list = new ArrayList<>();
 		list.add(getTermino());
-		
+
 		when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(list);
 		when(comverter.convertDtoToEntity(getTerminoDTO())).thenReturn(getTermino());
 		when(repository.save(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
-		
+
 		try {
 			TerminoDTO response = diccionarioService.updateTermino(getTerminoDTO());
 			assertNotNull(response, "The object is null");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+
 	}
-	
+
 	/**
 	 * Comprueba que el objeto es el esperado.
 	 */
@@ -256,12 +304,12 @@ public class DiccionarioServiceImplTest {
 	public void updateTerminoObjectEsperado() {
 		List<Termino> list = new ArrayList<>();
 		list.add(getTermino());
-		
+
 		when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(list);
 		when(comverter.convertDtoToEntity(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(repository.save(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
-		
+
 		try {
 			TerminoDTO response = diccionarioService.updateTermino(getTerminoDTO());
 			assertEquals(getTerminoDTO().getCategoria(), response.getCategoria(), "The objects are not same");
@@ -272,22 +320,39 @@ public class DiccionarioServiceImplTest {
 			e.getMessage();
 		}
 	}
-	
+
 	/**
 	 * Comprueba que lanza una exception de tipo Exception.
 	 */
 	@Test
 	public void updateTerminoTestError() {
 		List<Termino> list = new ArrayList<>();
-		
+
 		when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(list);
-		
+
 		try {
 			diccionarioService.updateTermino(getTerminoDTO());
 		} catch (Exception e) {
 			assertEquals("El termino Example no existe.", e.getMessage());
 		}
-		
+
+	}
+
+	/**
+	 * Comprueba que retorna una Exception de tipo IllegalArgumentException.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void updateTerminoTestExceptionIllegalArgumentException() throws Exception {
+		TerminoDTO request = getTerminoDTO();
+		request.setCategoria("");
+		try {
+			diccionarioService.updateTermino(request);
+		} catch (IllegalArgumentException e) {
+			assertEquals("El parametro Categoria es obligatorio", e.getMessage());
+		}
+
 	}
 
 	/**

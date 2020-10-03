@@ -35,8 +35,8 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	@Qualifier(value = "convert")
 	private ConvertTermino converter;
 
-	@Autowired
-	private Validate validator;
+	/** The validator. */
+	private Validate validator = new Validate();
 
 	/**
 	 * Get Termino.
@@ -136,7 +136,7 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	 */
 	@Override
 	public TerminoDTO updateTermino(TerminoDTO termino) throws Exception {
-		log.info("updateTermino >>>> request: %s", termino.toString());
+		log.info("updateTermino >>>> request: %s" + termino.toString());
 		try {
 			log.info("Validando parametros del objeto.");
 			validator.validateTerminoNull(termino);

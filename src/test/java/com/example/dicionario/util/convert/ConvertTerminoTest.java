@@ -167,7 +167,8 @@ public class ConvertTerminoTest {
 		try {
 			convert.convertEntityToDto(new Termino());
 		} catch (NullPointerException e) {
-			assertEquals("Some Termino attribute have null value", e.getMessage());
+			assertEquals("Some Termino attribute have null value. La base de datos regreso un atributo con valor null",
+					e.getMessage());
 		}
 	}
 
@@ -185,7 +186,8 @@ public class ConvertTerminoTest {
 		try {
 			convert.convertEntityToDto(termino);
 		} catch (NullPointerException e) {
-			assertEquals("Some Termino attribute have null value", e.getMessage());
+			assertEquals("Some Termino attribute have null value. La base de datos regreso un atributo con valor null",
+					e.getMessage());
 		}
 	}
 
@@ -203,7 +205,8 @@ public class ConvertTerminoTest {
 		try {
 			convert.convertEntityToDto(termino);
 		} catch (NullPointerException e) {
-			assertEquals("Some Termino attribute have null value", e.getMessage());
+			assertEquals("Some Termino attribute have null value. La base de datos regreso un atributo con valor null",
+					e.getMessage());
 		}
 	}
 
@@ -221,7 +224,8 @@ public class ConvertTerminoTest {
 		try {
 			convert.convertEntityToDto(termino);
 		} catch (NullPointerException e) {
-			assertEquals("Some Termino attribute have null value", e.getMessage());
+			assertEquals("Some Termino attribute have null value. La base de datos regreso un atributo con valor null",
+					e.getMessage());
 		}
 	}
 
@@ -239,7 +243,8 @@ public class ConvertTerminoTest {
 		try {
 			convert.convertEntityToDto(termino);
 		} catch (NullPointerException e) {
-			assertEquals("Some Termino attribute have null value", e.getMessage());
+			assertEquals("Some Termino attribute have null value. La base de datos regreso un atributo con valor null",
+					e.getMessage());
 		}
 	}
 
@@ -257,7 +262,8 @@ public class ConvertTerminoTest {
 		try {
 			convert.convertEntityToDto(termino);
 		} catch (NullPointerException e) {
-			assertEquals("Some Termino attribute have null value", e.getMessage());
+			assertEquals("Some Termino attribute have null value. La base de datos regreso un atributo con valor null",
+					e.getMessage());
 		}
 	}
 

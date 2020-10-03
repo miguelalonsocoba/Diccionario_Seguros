@@ -8,7 +8,6 @@ import com.example.dicionario.dto.TerminoDTO;
 /**
  * The class Validate.
  */
-@Component
 public class Validate {
 
 	/**
