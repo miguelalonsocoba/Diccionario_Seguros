@@ -37,8 +37,9 @@ public interface IDiccionarioService {
 	 * Enlista todos los terminos.
 	 * 
 	 * @return List of Termino
+	 * @throws Exception the exception
 	 */
-	List<TerminoDTO> listAll();
+	List<TerminoDTO> listAll() throws Exception;
 
 	/**
 	 * Obtener un termino en base a su nombre.

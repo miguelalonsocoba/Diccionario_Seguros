@@ -47,8 +47,8 @@ public class ConvertTermino {
 		if (terminoEntity.getCategoria() == null || terminoEntity.getDescripcion() == null
 				|| terminoEntity.getEjemplo() == null || terminoEntity.getId() == null
 				|| terminoEntity.getNombreTermino() == null) {
-			log.info("Some Termino attribute have null value");
-			throw new NullPointerException("Some Termino attribute have null value");
+			log.info("Some Termino attribute have null value. La base de datos regreso un atributo con valor null");
+			throw new NullPointerException("Some Termino attribute have null value. La base de datos regreso un atributo con valor null");
 		}
 		TerminoDTO terminoDTO = new TerminoDTO();
 		terminoDTO.setNombreTermino(terminoEntity.getNombreTermino());

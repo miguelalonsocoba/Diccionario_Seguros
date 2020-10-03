@@ -14,6 +14,7 @@ import com.example.dicionario.entity.Termino;
 import com.example.dicionario.repository.TerminoRepository;
 import com.example.dicionario.service.IDiccionarioService;
 import com.example.dicionario.util.convert.ConvertTermino;
+import com.example.dicionario.util.validator.Validate;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,6 +34,9 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	@Autowired
 	@Qualifier(value = "convert")
 	private ConvertTermino converter;
+
+	@Autowired
+	private Validate validator;
 
 	/**
 	 * Get Termino.
@@ -58,6 +62,13 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	@Override
 	public TerminoDTO addTermino(TerminoDTO terminoDto) {
 		log.info(String.format("addTermino() >>>>> termino: %s", terminoDto.toString()));
+		try {
+			log.info("Validando parametros del objeto.");
+			validator.validateTerminoNull(terminoDto);
+		} catch (IllegalArgumentException e) {
+			log.info("Exception IllegalArgumentException - " + e.getMessage());
+			throw new IllegalArgumentException(e.getMessage());
+		}
 		Termino terminoEntityRequest = converter.convertDtoToEntity(terminoDto);
 		Termino terminoEntityResponse = repository.save(terminoEntityRequest);
 		TerminoDTO terminoDtoResponse = converter.convertEntityToDto(terminoEntityResponse);
@@ -85,12 +96,12 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	 * Enlista todos los terminos.
 	 */
 	@Override
-	public List<TerminoDTO> listAll() {
+	public List<TerminoDTO> listAll() throws Exception {
 		log.info("listAll() >>>>> ");
 		List<Termino> listTerminosResponse = repository.findAll();
 		List<TerminoDTO> responseTerminos = new ArrayList<>();
+		TerminoDTO responseDto;
 		for (Termino termino : listTerminosResponse) {
-			TerminoDTO responseDto = new TerminoDTO();
 			responseDto = converter.convertEntityToDto(termino);
 			responseTerminos.add(responseDto);
 		}
@@ -105,6 +116,9 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	public List<TerminoDTO> getTerminoByNombre(String termino) {
 		log.info("getTerminoByNombre() >>>>");
 		List<Termino> responseEntity = repository.findByNombreTermino(termino);
+		if (responseEntity.isEmpty()) {
+			throw new NullPointerException(String.format("El termino %s no existe en la base de datos.", termino));
+		}
 		List<TerminoDTO> responsDtos = new ArrayList<>();
 		for (Termino terminoEntity : responseEntity) {
 			TerminoDTO responseDto = new TerminoDTO();
@@ -117,18 +131,26 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 
 	/**
 	 * Actualizar informacion de un Termino.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Override
 	public TerminoDTO updateTermino(TerminoDTO termino) throws Exception {
 		log.info("updateTermino >>>> request: %s", termino.toString());
+		try {
+			log.info("Validando parametros del objeto.");
+			validator.validateTerminoNull(termino);
+		} catch (IllegalArgumentException e) {
+			log.info("Exception IllegalArgumentException - " + e.getMessage());
+			throw new IllegalArgumentException(e.getMessage());
+		}
 		List<Termino> existeTermino = repository.findByNombreTermino(termino.getNombreTermino());
-		
+
 		if (existeTermino.isEmpty()) {
 			log.error("Exception: %s", "El termino no existe");
 			throw new Exception(String.format("El termino %s no existe.", termino.getNombreTermino()));
 		}
-		
+
 		Termino response = repository.save(converter.convertDtoToEntity(termino));
 		log.info("updateTermino() <<<<< response: %s", response.toString());
 		return converter.convertEntityToDto(response);

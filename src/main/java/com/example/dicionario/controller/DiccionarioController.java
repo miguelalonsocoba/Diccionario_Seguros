@@ -63,6 +63,9 @@ public class DiccionarioController {
 	public String getTerminoID(@RequestParam(name = "idTermino") final Integer idTermino) {
 		log.info(String.format("getTerminoID() >>>>>> idTermino: %s", idTermino));
 		try {
+			if (idTermino == null) {
+				throw new NullPointerException("The param idTermino es null: ");
+			}
 			TerminoDTO termino = serviceDiccionario.getTerminoId(idTermino);
 			log.info(String.format("getTerminoID() <<<<<< termino: %s", termino.toString()));
 			return oMapper.writeValueAsString(termino);
@@ -117,6 +120,9 @@ public class DiccionarioController {
 	public String deletTermino(@RequestParam(name = "id") final Integer id) throws Exception {
 		log.info(String.format("deletTermino() >>>>> request: %s", id));
 		try {
+			if (id == null) {
+				throw new NullPointerException("El parametro id es null");
+			}
 			String response = serviceDiccionario.deleteById(id);
 			log.info(String.format("deletTermino() <<<<< response: %s", "response"));
 			return "Termino con id: " + id + " eliminado correctamente: " + response;
@@ -138,9 +144,15 @@ public class DiccionarioController {
 			@ApiResponse(code = 503, message = "Servicio no Disponible."),
 			@ApiResponse(code = 500, message = "Conflictos con el servidor.") })
 	@GetMapping(path = "/getAll", produces = "application/json")
-	public List<TerminoDTO> getAll() {
+	public List<TerminoDTO> getAll() throws Exception {
 		log.info("getAll() >>>>> ");
-		List<TerminoDTO> response = serviceDiccionario.listAll();
+		List<TerminoDTO> response;
+		try {
+			response = serviceDiccionario.listAll();
+		} catch (Exception e) {
+			log.info("Error: " + e.getMessage());
+			throw new Exception(e.getMessage());
+		}
 		log.info("getAll() <<<<<");
 		return response;
 	}
@@ -154,6 +166,10 @@ public class DiccionarioController {
 	@GetMapping(path = "getByTermino", produces = "application/json")
 	public List<TerminoDTO> getTerminoByName(@RequestParam(name = "termino") String termino) {
 		log.info("getTerminoByName() >>>> requestPAram: %s", termino);
+		if (termino.isEmpty()) {
+			log.info("Error: El parametro termino tienen un valor nulo.");
+			throw new NullPointerException("EL parametro termino tienen un valor nulo");
+		}
 		List<TerminoDTO> response = serviceDiccionario.getTerminoByNombre(termino);
 		log.info("getTErminoNyName() <<<< response: %s", response.toString());
 		return response;
