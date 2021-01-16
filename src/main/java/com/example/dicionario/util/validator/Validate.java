@@ -1,6 +1,5 @@
 package com.example.dicionario.util.validator;
 
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.example.dicionario.dto.TerminoDTO;
