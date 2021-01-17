@@ -64,9 +64,10 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 
 	/**
 	 * Add Termino.
+	 * @throws Exception 
 	 */
 	@Override
-	public TerminoDTO addTermino(TerminoDTO terminoDto) {
+	public TerminoDTO addTermino(TerminoDTO terminoDto) throws Exception {
 		log.info(String.format("addTermino() >>>>> termino: %s", terminoDto.toString()));
 		try {
 			log.info("Validando parametros del objeto.");
@@ -76,6 +77,11 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 			throw new IllegalArgumentException(e.getMessage());
 		}
 		Termino terminoEntityRequest = converter.convertDtoToEntity(terminoDto);
+		List<Termino> terminos = repository.findByNombreTermino(terminoEntityRequest.getNombreTermino());
+		if (!terminos.isEmpty() ) {
+			log.error("Ya existe el Termino: " + terminoEntityRequest.getNombreTermino());
+			throw new Exception(String.format("El termino %s ya existe...", terminoEntityRequest.getNombreTermino()));
+		}
 		Termino terminoEntityResponse = repository.save(terminoEntityRequest);
 		TerminoDTO terminoDtoResponse = converter.convertEntityToDto(terminoEntityResponse);
 		log.info(String.format("addTermino() <<<<< response: %s", terminoDtoResponse.toString()));

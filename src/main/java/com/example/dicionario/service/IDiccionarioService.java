@@ -23,7 +23,7 @@ public interface IDiccionarioService {
 	 * @param termino de TerminoDTO
 	 * @return objeto TerminoDTO
 	 */
-	TerminoDTO addTermino(TerminoDTO termino);
+	TerminoDTO addTermino(TerminoDTO termino) throws Exception;
 
 	/**
 	 * Elimina un termino por ID.
