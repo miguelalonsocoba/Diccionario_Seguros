@@ -40,7 +40,7 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 
 	/** The list terminos entity. */
 	List<Termino> terminosEntity = new ArrayList<>();
-	
+
 	/** The list terminos dto. */
 	List<TerminoDTO> terminosDTO = new ArrayList<>();
 
