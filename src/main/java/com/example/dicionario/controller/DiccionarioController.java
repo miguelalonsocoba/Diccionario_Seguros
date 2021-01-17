@@ -83,6 +83,7 @@ public class DiccionarioController {
 	 * 
 	 * @param request of String
 	 * @return Object String
+	 * @throws Exception 
 	 */
 	@ApiOperation(code = Constants.STATUSOK, value = "Agrega un Termino.", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
@@ -91,7 +92,7 @@ public class DiccionarioController {
 			@ApiResponse(code = 503, message = "Servicio no Disponible."),
 			@ApiResponse(code = 500, message = "Conflictos con el servidor.") })
 	@PostMapping(path = "/addTermino", consumes = "application/json", produces = "application/json")
-	public String addTermino(@Validated @RequestBody final TerminoDTO request) {
+	public String addTermino(@Validated @RequestBody final TerminoDTO request) throws Exception {
 		log.info(String.format("addTermino() >>>>>>> request: %s", request));
 		try {
 			TerminoDTO response = serviceDiccionario.addTermino(request);
@@ -100,6 +101,9 @@ public class DiccionarioController {
 		} catch (JsonProcessingException e) {
 			log.error(String.format("JsonProccesingException: %s", e.getMessage()));
 			throw new ProxyException(String.format(Constants.ERROR_SERVICIO_DICCIONARIO_SEGUROS, e.getMessage()));
+		} catch (Exception e) {
+			log.error("Fallo al insertar Termino: " + e.getMessage());
+			throw new Exception(String.format("Fallo al insertar Termino: %s", e.getMessage()));
 		}
 	}
 
