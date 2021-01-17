@@ -38,6 +38,12 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	/** The validator. */
 	private Validate validator = new Validate();
 
+	/** The list terminos entity. */
+	List<Termino> terminosEntity = new ArrayList<>();
+	
+	/** The list terminos dto. */
+	List<TerminoDTO> terminosDTO = new ArrayList<>();
+
 	/**
 	 * Get Termino.
 	 */
@@ -154,6 +160,20 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 		Termino response = repository.save(converter.convertDtoToEntity(termino));
 		log.info("updateTermino() <<<<< response: %s", response.toString());
 		return converter.convertEntityToDto(response);
+	}
+
+	/**
+	 * Realiza la carga masiva de datos.
+	 */
+	@Override
+	public List<TerminoDTO> bulkLoad(List<TerminoDTO> terminos) throws Exception {
+		log.info("bulkLoad() >>>>> Param: " + terminos.toString());
+		terminos.stream().forEach((e) -> terminosEntity.add(converter.convertDtoToEntity(e)));
+		terminosEntity.stream().forEach(e -> {
+			log.info("Value Entity: " + e.toString());
+			terminosDTO.add(converter.convertEntityToDto(repository.save(e)));
+		});
+		return terminosDTO;
 	}
 
 }

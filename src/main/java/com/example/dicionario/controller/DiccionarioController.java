@@ -187,5 +187,11 @@ public class DiccionarioController {
 		TerminoDTO response = serviceDiccionario.updateTermino(termino);
 		return oMapper.writeValueAsString(response);
 	}
+	
+	@PostMapping(path = "bulkLoad", produces = "application/json", consumes = "application/json")
+	public List<TerminoDTO> bulkLoad(@RequestBody List<TerminoDTO> terminos) throws Exception {
+		log.info("bulkLoad() >>>>> request: " + terminos.toString());
+		return serviceDiccionario.bulkLoad(terminos);
+	}
 
 }

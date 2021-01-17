@@ -53,9 +53,18 @@ public interface IDiccionarioService {
 	 * Actualizar informacion del Termino.
 	 * 
 	 * @param termino of Termino
-	 * @return object TErminoDTO
+	 * @return object TerminoDTO
 	 * @throws Exception
 	 */
 	TerminoDTO updateTermino(TerminoDTO termino) throws Exception;
+
+	/**
+	 * Realiza una carga masiva de terminos.
+	 * 
+	 * @param terminos of Termino
+	 * @return list TerminoDTO
+	 * @throws Exception
+	 */
+	List<TerminoDTO> bulkLoad(List<TerminoDTO> terminos) throws Exception;
 
 }

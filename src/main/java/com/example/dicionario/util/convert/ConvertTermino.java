@@ -28,7 +28,7 @@ public class ConvertTermino {
 			throw new NullPointerException("Some attribute have null value.");
 		}
 		Termino terminoEntity = new Termino();
-		terminoEntity.setNombreTermino(terminoDto.getNombreTermino());
+		terminoEntity.setNombreTermino(terminoDto.getNombreTermino().toUpperCase());
 		terminoEntity.setDescripcion(terminoDto.getDescripcion());
 		terminoEntity.setCategoria(terminoDto.getCategoria());
 		terminoEntity.setEjemplo(terminoDto.getEjemplo());
