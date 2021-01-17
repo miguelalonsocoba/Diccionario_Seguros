@@ -2,7 +2,6 @@ package com.example.dicionario.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -100,9 +99,10 @@ public class DiccionarioServiceImplTest {
 
 	/**
 	 * Comprueba que el objeto no es null.
+	 * @throws Exception 
 	 */
 	@Test
-	public void addTerminoTestResponseNotNull() {
+	public void addTerminoTestResponseNotNull() throws Exception {
 		when(comverter.convertDtoToEntity(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(repository.save(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
@@ -114,9 +114,11 @@ public class DiccionarioServiceImplTest {
 
 	/**
 	 * Comprueba que retorna el objeto esperado.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
-	public void addTerminoTestResponseEsperado() {
+	public void addTerminoTestResponseEsperado() throws Exception {
 		when(comverter.convertDtoToEntity(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(repository.save(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
@@ -133,9 +135,10 @@ public class DiccionarioServiceImplTest {
 
 	/**
 	 * Comprueba que lanza una Exception de tipo IllegalArgumentException.
+	 * @throws Exception 
 	 */
 	@Test
-	public void addTerminoTestException() {
+	public void addTerminoTestException() throws Exception {
 		TerminoDTO request = getTerminoDTO();
 		request.setCategoria("");
 		try {
