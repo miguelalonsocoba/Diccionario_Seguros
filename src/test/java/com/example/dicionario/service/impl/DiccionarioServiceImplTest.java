@@ -22,7 +22,7 @@ import com.example.dicionario.entity.Termino;
 import com.example.dicionario.repository.TerminoRepository;
 import com.example.dicionario.util.convert.ConvertTermino;
 
-public class DiccionarioServiceImplTest {
+class DiccionarioServiceImplTest {
 
 	@InjectMocks
 	private DiccionarioServiceImpl diccionarioService;
@@ -39,13 +39,13 @@ public class DiccionarioServiceImplTest {
 	TerminoDTO responseDTO;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		MockitoAnnotations.initMocks(this);
 		res = Optional.of(getTermino());
 	}
 
 	@AfterEach
-	public void setDown() {
+	void setDown() {
 		responseDTO = null;
 	}
 
@@ -53,7 +53,7 @@ public class DiccionarioServiceImplTest {
 	 * Test: Comprueba que el objeto no es Not Null.
 	 */
 	@Test
-	public void getTerminoIdTestIsNotNull() {
+	void getTerminoIdTestIsNotNull() {
 		when(repository.findById(ArgumentMatchers.anyInt())).thenReturn(res);
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
 
@@ -66,7 +66,7 @@ public class DiccionarioServiceImplTest {
 	 * Comprueba que el objeto retornado es el mismo que el esperado.
 	 */
 	@Test
-	public void getTerimoIdTestIsEquals() {
+	void getTerimoIdTestIsEquals() {
 
 		when(repository.findById(ArgumentMatchers.anyInt())).thenReturn(res);
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
@@ -83,7 +83,7 @@ public class DiccionarioServiceImplTest {
 	 * Throws a exception of type NoSuchElementException.
 	 */
 	@Test
-	public void getTerminoIdTestError() {
+	void getTerminoIdTestError() {
 		Integer idTermino = 3;
 		String message = "Item not found.";
 
@@ -99,10 +99,11 @@ public class DiccionarioServiceImplTest {
 
 	/**
 	 * Comprueba que el objeto no es null.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
-	public void addTerminoTestResponseNotNull() throws Exception {
+	void addTerminoTestResponseNotNull() throws Exception {
 		when(comverter.convertDtoToEntity(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(repository.save(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
@@ -118,7 +119,7 @@ public class DiccionarioServiceImplTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void addTerminoTestResponseEsperado() throws Exception {
+	void addTerminoTestResponseEsperado() throws Exception {
 		when(comverter.convertDtoToEntity(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(repository.save(ArgumentMatchers.any())).thenReturn(getTermino());
 		when(comverter.convertEntityToDto(ArgumentMatchers.any())).thenReturn(getTerminoDTO());
@@ -135,10 +136,11 @@ public class DiccionarioServiceImplTest {
 
 	/**
 	 * Comprueba que lanza una Exception de tipo IllegalArgumentException.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
-	public void addTerminoTestException() throws Exception {
+	void addTerminoTestException() throws Exception {
 		TerminoDTO request = getTerminoDTO();
 		request.setCategoria("");
 		try {
@@ -152,7 +154,7 @@ public class DiccionarioServiceImplTest {
 	 * Comprueba que el response no sea nulo.
 	 */
 	@Test
-	public void deleteByIdTestResponseNotNull() {
+	void deleteByIdTestResponseNotNull() {
 
 		String response = diccionarioService.deleteById(3);
 
@@ -163,7 +165,7 @@ public class DiccionarioServiceImplTest {
 	 * Comprueba que el response se el esperado.
 	 */
 	@Test
-	public void deleteByIdTestResponseEsperado() {
+	void deleteByIdTestResponseEsperado() {
 		String response = diccionarioService.deleteById(3);
 
 		assertEquals("Success ok", response);
@@ -173,7 +175,7 @@ public class DiccionarioServiceImplTest {
 	 * Comprueba que regresa una Exception de tipo IllegalArgumentException.
 	 */
 	@Test
-	public void deleteByIdTestExceptionIllegaArgumentsException() {
+	void deleteByIdTestExceptionIllegaArgumentsException() {
 		try {
 			diccionarioService.deleteById(30);
 		} catch (IllegalArgumentException e) {
@@ -186,7 +188,7 @@ public class DiccionarioServiceImplTest {
 	 * Comprueba que retorna una exception de tipo IllegalArgumentException.
 	 */
 //	@Test
-//	public void deleteByIdTestExceptionIllegalArgumentException() {
+//	 void deleteByIdTestExceptionIllegalArgumentException() {
 //		
 //	}
 
@@ -196,7 +198,7 @@ public class DiccionarioServiceImplTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void listAllTestNotull() throws Exception {
+	void listAllTestNotull() throws Exception {
 		List<Termino> response = new ArrayList<>();
 		response.add(getTermino());
 		response.add(getTermino());
@@ -215,7 +217,7 @@ public class DiccionarioServiceImplTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void listAllTestResponseEsperado() throws Exception {
+	void listAllTestResponseEsperado() throws Exception {
 		List<Termino> response = new ArrayList<>();
 		response.add(getTermino());
 
@@ -234,7 +236,7 @@ public class DiccionarioServiceImplTest {
 	 * Comprueba que el response no es nulo.
 	 */
 	@Test
-	public void getTerminoByNombreTestObjectNotNull() {
+	void getTerminoByNombreTestObjectNotNull() {
 		List<Termino> response = new ArrayList<>();
 		response.add(getTermino());
 		when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(response);
@@ -249,7 +251,7 @@ public class DiccionarioServiceImplTest {
 	 * Comprueba que el response es el esperado.
 	 */
 	@Test
-	public void getTerminoByNombreTestObjectEsperado() {
+	void getTerminoByNombreTestObjectEsperado() {
 		List<Termino> response = new ArrayList<>();
 		response.add(getTermino());
 		when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(response);
@@ -267,7 +269,7 @@ public class DiccionarioServiceImplTest {
 	 * Comprueba que regresa una Exception de termino NullPointerException.
 	 */
 	@Test
-	public void getTErminoByNombreTestResponseEntityNull() {
+	void getTErminoByNombreTestResponseEntityNull() {
 		when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(new ArrayList<>());
 
 		try {
@@ -282,7 +284,7 @@ public class DiccionarioServiceImplTest {
 	 * Comprueba que el response no es nulo.
 	 */
 	@Test
-	public void updateTerminoTestObjectNotNull() {
+	void updateTerminoTestObjectNotNull() {
 		List<Termino> list = new ArrayList<>();
 		list.add(getTermino());
 
@@ -304,7 +306,7 @@ public class DiccionarioServiceImplTest {
 	 * Comprueba que el objeto es el esperado.
 	 */
 	@Test
-	public void updateTerminoObjectEsperado() {
+	void updateTerminoObjectEsperado() {
 		List<Termino> list = new ArrayList<>();
 		list.add(getTermino());
 
@@ -328,7 +330,7 @@ public class DiccionarioServiceImplTest {
 	 * Comprueba que lanza una exception de tipo Exception.
 	 */
 	@Test
-	public void updateTerminoTestError() {
+	void updateTerminoTestError() {
 		List<Termino> list = new ArrayList<>();
 
 		when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(list);
@@ -347,7 +349,7 @@ public class DiccionarioServiceImplTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void updateTerminoTestExceptionIllegalArgumentException() throws Exception {
+	void updateTerminoTestExceptionIllegalArgumentException() throws Exception {
 		TerminoDTO request = getTerminoDTO();
 		request.setCategoria("");
 		try {
@@ -363,7 +365,7 @@ public class DiccionarioServiceImplTest {
 	 * 
 	 * @return object Termino
 	 */
-	public Termino getTermino() {
+	Termino getTermino() {
 		return new Termino(1, "Example", "Example", "Example", "Example");
 	}
 
@@ -372,7 +374,7 @@ public class DiccionarioServiceImplTest {
 	 * 
 	 * @return object TerminoDTO
 	 */
-	public TerminoDTO getTerminoDTO() {
+	TerminoDTO getTerminoDTO() {
 		return new TerminoDTO("Example", "Exapmle", "Exapmle", "Exapmle");
 	}
 

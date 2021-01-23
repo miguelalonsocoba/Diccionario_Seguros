@@ -23,7 +23,7 @@ import com.example.dicionario.service.impl.DiccionarioServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class DiccionarioControllerTest {
+class DiccionarioControllerTest {
 
 	@InjectMocks
 	private DiccionarioController diccionarioController;
@@ -35,7 +35,7 @@ public class DiccionarioControllerTest {
 	private ObjectMapper oMapper;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		MockitoAnnotations.initMocks(this);
 	}
 
@@ -45,7 +45,7 @@ public class DiccionarioControllerTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void getTerminoIDTestOk() throws Exception {
+	void getTerminoIDTestOk() throws Exception {
 		ObjectMapper oMapperWorker = new ObjectMapper();
 		when(service.getTerminoId(6)).thenReturn(getResponse());
 		when(oMapper.writeValueAsString(ArgumentMatchers.any()))
@@ -60,7 +60,7 @@ public class DiccionarioControllerTest {
 	 * Lanza Exception JsonProcessingException.
 	 */
 	@Test
-	public void getTerminoIdTestError() {
+	void getTerminoIdTestError() {
 		try {
 			when(service.getTerminoId(6)).thenReturn(getResponse());
 			when(oMapper.writeValueAsString(ArgumentMatchers.any())).thenThrow(new JsonProcessingException("Error") {
@@ -76,7 +76,7 @@ public class DiccionarioControllerTest {
 	 * Comprueba que retorna un error de tipo ProxyException.
 	 */
 	@Test
-	public void getTerminoIDTestErrorProxyException() {
+	void getTerminoIDTestErrorProxyException() {
 		when(service.getTerminoId(6)).thenThrow(new ProxyException("Error"));
 
 		try {
@@ -90,7 +90,7 @@ public class DiccionarioControllerTest {
 	 * Cpmprueba que el objeto de respuesta no es nulo y que es igual a lo esperado.
 	 */
 	@Test
-	public void addTerminoTestOk() throws Exception {
+	void addTerminoTestOk() throws Exception {
 		ObjectMapper oMapperWorker = new ObjectMapper();
 		when(service.addTermino(ArgumentMatchers.any())).thenReturn(getResponse());
 		when(oMapper.writeValueAsString(ArgumentMatchers.any()))
@@ -103,7 +103,7 @@ public class DiccionarioControllerTest {
 	}
 
 	@Test
-	public void addTerminoTestErrorJsonProcesingException() {
+	void addTerminoTestErrorJsonProcesingException() {
 		try {
 			when(service.addTermino(ArgumentMatchers.any())).thenReturn(getResponse());
 			when(oMapper.writeValueAsString(ArgumentMatchers.any())).thenThrow(new JsonProcessingException("Error") {
@@ -118,7 +118,7 @@ public class DiccionarioControllerTest {
 	 * Comprueba que regresa una Exception de tipo NullPointerException.
 	 */
 	@Test
-	public void getTerminoIdTestNullPointerException() {
+	void getTerminoIdTestNullPointerException() {
 		try {
 			diccionarioController.getTerminoID(null);
 		} catch (NullPointerException e) {
@@ -131,7 +131,7 @@ public class DiccionarioControllerTest {
 	 * Comprueba que el metodo retorna lo esperado y que no sea null.
 	 */
 	@Test
-	public void deletTerminoTestOk() {
+	void deletTerminoTestOk() {
 		Integer idTermino = 9;
 
 		try {
@@ -149,7 +149,7 @@ public class DiccionarioControllerTest {
 	 * Verifica si se ejecuta el servicio.
 	 */
 	@Test
-	public void deletTerminoTestExecuteService() throws Exception {
+	void deletTerminoTestExecuteService() throws Exception {
 		Integer idTermino = 9;
 
 		String response = diccionarioController.deletTermino(idTermino);
@@ -162,7 +162,7 @@ public class DiccionarioControllerTest {
 	 * Exception.
 	 */
 	@Test
-	public void deletTerminoTestErrorException() throws Exception {
+	void deletTerminoTestErrorException() throws Exception {
 		Integer idTermino = 9;
 		try {
 			when(service.deleteById(idTermino)).thenThrow(new IllegalArgumentException("Error"));
@@ -179,7 +179,7 @@ public class DiccionarioControllerTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void deletTerminoTestExceptionNullPointerException() throws Exception {
+	void deletTerminoTestExceptionNullPointerException() throws Exception {
 		try {
 			diccionarioController.deletTermino(null);
 		} catch (Exception e) {
@@ -193,7 +193,7 @@ public class DiccionarioControllerTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void getAllTestOk() throws Exception {
+	void getAllTestOk() throws Exception {
 		List<TerminoDTO> responseList = new ArrayList<TerminoDTO>();
 		responseList.add(getResponse());
 		responseList.add(getResponse());
@@ -208,7 +208,7 @@ public class DiccionarioControllerTest {
 	 * Comprueba que retorna una Exception.
 	 */
 	@Test
-	public void getAllTestException() {
+	void getAllTestException() {
 		try {
 			when(service.listAll()).thenThrow(new Exception("Error"));
 			diccionarioController.getAll();
@@ -222,7 +222,7 @@ public class DiccionarioControllerTest {
 	 * Comprueba que el metodo se ejecute correctamente.
 	 */
 	@Test
-	public void getTerminoByNameTestOk() {
+	void getTerminoByNameTestOk() {
 		List<TerminoDTO> responseList = new ArrayList<>();
 		responseList.add(getResponse());
 		responseList.add(getResponse());
@@ -235,7 +235,7 @@ public class DiccionarioControllerTest {
 	 * Comprueba que regresa una Exception de tipo NulPointerException.
 	 */
 	@Test
-	public void getTerminoByNameTestExceptionNullPointerException() {
+	void getTerminoByNameTestExceptionNullPointerException() {
 		try {
 			diccionarioController.getTerminoByName("");
 		} catch (NullPointerException e) {
@@ -250,7 +250,7 @@ public class DiccionarioControllerTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void updateTerminoTestOk() throws Exception {
+	void updateTerminoTestOk() throws Exception {
 		ObjectMapper oMapperWorker = new ObjectMapper();
 		when(service.updateTermino(getResponse())).thenReturn(getResponse());
 		when(oMapper.writeValueAsString(ArgumentMatchers.any()))

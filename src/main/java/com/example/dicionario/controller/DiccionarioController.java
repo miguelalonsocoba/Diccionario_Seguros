@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dicionario.config.SwaggerConfig;
 import com.example.dicionario.constants.Constants;
 import com.example.dicionario.dto.TerminoDTO;
-import com.example.dicionario.entity.Response.ResponseBulkLoad;
+import com.example.dicionario.entity.response.ResponseBulkLoad;
 import com.example.dicionario.exceptions.ProxyException;
 import com.example.dicionario.service.IDiccionarioService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,6 +28,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -35,8 +38,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping(path = "/diccionario")
-@Api(value = "diccionario", description = "Operaciones CRUD de Diccionario")
+@Api(value = "diccionario", tags = {SwaggerConfig.TAG_1})
 @ApiOperation(value = "Consultar, Insertar, Actualizar y Eliminar Terminos del Diccionario", notes = "")
+@SwaggerDefinition(tags = {
+		@Tag(name = "Example", description = "Example")
+})
 public class DiccionarioController {
 
 	/** The service. */
@@ -174,7 +180,7 @@ public class DiccionarioController {
 			@ApiResponse(code = 503, message = "Servicio no Disponible."),
 			@ApiResponse(code = 500, message = "Conflictos con el servidor.") })
 	@GetMapping(path = "getByTermino", produces = "application/json")
-	public List<TerminoDTO> getTerminoByName(@RequestParam(name = "termino") String termino) {
+	public List<TerminoDTO> getTerminoByName(@RequestParam(name = "termino") final String termino) {
 		log.info("getTerminoByName() >>>> requestPAram: %s", termino);
 		if (termino.isEmpty()) {
 			log.info("Error: El parametro termino tienen un valor nulo.");
@@ -185,6 +191,13 @@ public class DiccionarioController {
 		return response;
 	}
 
+	/**
+	 * Actualiza un termino.
+	 * 
+	 * @param termino the termino
+	 * @return object String
+	 * @throws Exception the exception
+	 */
 	@ApiOperation(value = "Actualiza Termino", notes = "Actualiza la informacion de un Termino si este previamente existe.")
 	@ApiResponses({
 			@ApiResponse(code = Constants.STATUSOK, message = "Actualizacion exitosa", response = TerminoDTO.class),
@@ -192,7 +205,7 @@ public class DiccionarioController {
 			@ApiResponse(code = 500, message = "Conflicto con el servidor."),
 			@ApiResponse(code = 503, message = "Servicio no disponible.") })
 	@PutMapping(path = "updateTermino", produces = "application/json", consumes = "application/json")
-	public String updateTermino(@RequestBody TerminoDTO termino) throws Exception {
+	public String updateTermino(@RequestBody final TerminoDTO termino) throws Exception {
 		log.info("updateTermino() >>>>> request: %s", termino.toString());
 		TerminoDTO response = serviceDiccionario.updateTermino(termino);
 		return oMapper.writeValueAsString(response);
@@ -228,11 +241,10 @@ public class DiccionarioController {
 	 */
 	@ApiOperation(value = "BulkLoad", notes = "Realiza una carga masiva de datos. Si el parametre rollBack tiene valor de true este realizara un rollback de los datos insertados en la BD, esto siempre y cuando no se pueda insetar un elementeo de la lista por alguna razón.")
 	@ApiResponses({
-		@ApiResponse(code = Constants.STATUSOK, message = "Carga exitosa.", response = ResponseBulkLoad.class),
-		@ApiResponse(code = 400, message = "Conflicto interno en el proceso."),
-		@ApiResponse(code = 500, message = "Conflicto con el Servidor."),
-		@ApiResponse(code = 503, message = "Servicio no Disponible.")
-	})
+			@ApiResponse(code = Constants.STATUSOK, message = "Carga exitosa.", response = ResponseBulkLoad.class),
+			@ApiResponse(code = 400, message = "Conflicto interno en el proceso."),
+			@ApiResponse(code = 500, message = "Conflicto con el Servidor."),
+			@ApiResponse(code = 503, message = "Servicio no Disponible.") })
 	@PostMapping(path = "bulkLoad", produces = "application/json", consumes = "application/json")
 	public ResponseBulkLoad bulkLoad(@RequestBody final List<TerminoDTO> terminos,
 			@RequestParam(name = "rollBack") final String rollBack) throws Exception {

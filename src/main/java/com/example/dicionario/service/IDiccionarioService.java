@@ -3,7 +3,7 @@ package com.example.dicionario.service;
 import java.util.List;
 
 import com.example.dicionario.dto.TerminoDTO;
-import com.example.dicionario.entity.Response.ResponseBulkLoad;
+import com.example.dicionario.entity.response.ResponseBulkLoad;
 
 /**
  * Inteface IDiccionarioService.
