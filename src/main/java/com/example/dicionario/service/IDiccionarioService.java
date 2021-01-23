@@ -3,6 +3,7 @@ package com.example.dicionario.service;
 import java.util.List;
 
 import com.example.dicionario.dto.TerminoDTO;
+import com.example.dicionario.entity.Response.ResponseBulkLoad;
 
 /**
  * Inteface IDiccionarioService.
@@ -71,9 +72,9 @@ public interface IDiccionarioService {
 	 * Realiza una carga masiva de terminos.
 	 * 
 	 * @param terminos of Termino
-	 * @return list TerminoDTO
+	 * @return object ResponseBulkLoad
 	 * @throws Exception
 	 */
-	// List<TerminoDTO> bulkLoad(List<TerminoDTO> terminos) throws Exception;
+	ResponseBulkLoad bulkLoad(List<TerminoDTO> terminos, String rollBack) throws Exception;
 
 }

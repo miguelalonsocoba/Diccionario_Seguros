@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.dicionario.dto.TerminoDTO;
 import com.example.dicionario.entity.Termino;
+import com.example.dicionario.entity.Response.ResponseBulkLoad;
 import com.example.dicionario.repository.TerminoRepository;
 import com.example.dicionario.service.IDiccionarioService;
 import com.example.dicionario.util.convert.ConvertTermino;
@@ -39,13 +40,22 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	private Validate validator = new Validate();
 
 	/** The list terminos entity. */
-	List<Termino> terminosEntity = new ArrayList<>();
+	List<Termino> terminosEntity;
 
 	/** The list terminos dto. */
-	List<TerminoDTO> terminosDTO = new ArrayList<>();
+	List<TerminoDTO> terminosDTO;
 
-	/** Indica si se realizara un rollBack. */
-	Boolean rollBack = false;
+	/**
+	 * Almacena los terminos que no se guardaran en la BD porque ya existe un
+	 * termino con nombre igual.
+	 */
+	List<TerminoDTO> terminosExistentes;
+
+	/** Representa los datos que se cargan y lo que no se cargan en la BD. */
+	private ResponseBulkLoad responseBulkLoad = new ResponseBulkLoad();
+
+	/** Realiza el conteo de todos los terminos que seran eliminados. */
+	Long contador = 0L;
 
 	/**
 	 * Get Termino.
@@ -183,8 +193,8 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	/**
 	 * Realiza la carga masiva de datos.
 	 */
-	/*@Override
-	public List<TerminoDTO> bulkLoad(List<TerminoDTO> terminos) throws Exception {
+	@Override
+	public ResponseBulkLoad bulkLoad(List<TerminoDTO> terminos, String rollBack) throws Exception {
 		log.info("bulkLoad() >>>>> Param: " + terminos.toString());
 		/*
 		 * terminos.stream().forEach((e) ->
@@ -193,19 +203,37 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 		 * e.toString());
 		 * terminosDTO.add(converter.convertEntityToDto(repository.save(e))); });
 		 */
-		/*terminos.stream().forEach(e -> {
+		terminosDTO = new ArrayList<>();
+		terminosExistentes = new ArrayList<>();
+		terminos.stream().forEach(e -> {
 			try {
 				terminosDTO.add(addTermino(e));
 			} catch (Exception e1) {
 				log.error(String.format("Exception: %s", e1));
-				rollBack = true;
+				terminosExistentes.add(e);
+				log.info("Terminos que ya existen en la BD, no fueron almacenados: " + terminosExistentes.toString());
 			}
 		});
 
-		if (Boolean.TRUE.equals(rollBack) && !terminosDTO.isEmpty()) {
-			terminosDTO.stream().forEach(e -> log.info(String.format("Datos Rollback: %s", e)));
+		if (rollBack.equals("true") && !terminosDTO.isEmpty()) {
+			terminosDTO.stream().forEach(e -> {
+				try {
+					log.info("Termino a eliminar: " + e.getNombreTermino());
+					contador += deleteByName(e.getNombreTermino());
+					log.info("Termino Eliminado: " + e.toString());
+				} catch (Exception e2) {
+					log.error("Exception: " + e2.getMessage());
+				}
+			});
 		}
-		return terminosDTO;
-	}*/
+
+		responseBulkLoad.setLoadedData(terminosDTO);
+		responseBulkLoad.setDataNoLoaded(terminosExistentes);
+		responseBulkLoad.setTotalesRollBack(contador);
+		contador = 0L;
+		log.info("Terminos insertados: " + responseBulkLoad.getLoadedData());
+		log.info("Terminos no insertados: " + responseBulkLoad.getDataNoLoaded());
+		return responseBulkLoad;
+	}
 
 }
