@@ -44,6 +44,9 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	/** The list terminos dto. */
 	List<TerminoDTO> terminosDTO = new ArrayList<>();
 
+	/** Indica si se realizara un rollBack. */
+	Boolean rollBack = false;
+
 	/**
 	 * Get Termino.
 	 */
@@ -64,7 +67,8 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 
 	/**
 	 * Add Termino.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Override
 	public TerminoDTO addTermino(TerminoDTO terminoDto) throws Exception {
@@ -78,7 +82,7 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 		}
 		Termino terminoEntityRequest = converter.convertDtoToEntity(terminoDto);
 		List<Termino> terminos = repository.findByNombreTermino(terminoEntityRequest.getNombreTermino());
-		if (!terminos.isEmpty() ) {
+		if (!terminos.isEmpty()) {
 			log.error("Ya existe el Termino: " + terminoEntityRequest.getNombreTermino());
 			throw new Exception(String.format("El termino %s ya existe...", terminoEntityRequest.getNombreTermino()));
 		}
@@ -168,18 +172,40 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 		return converter.convertEntityToDto(response);
 	}
 
+	@Override
+	public Long deleteByName(String termino) throws Exception {
+		log.info("deleteByName() >>>>> - Param: " + termino);
+		Long response = repository.deleteByNombreTermino(termino);
+		log.info("deleteByName() <<<<< - Return/Response: " + response);
+		return response;
+	}
+
 	/**
 	 * Realiza la carga masiva de datos.
 	 */
-	@Override
+	/*@Override
 	public List<TerminoDTO> bulkLoad(List<TerminoDTO> terminos) throws Exception {
 		log.info("bulkLoad() >>>>> Param: " + terminos.toString());
-		terminos.stream().forEach((e) -> terminosEntity.add(converter.convertDtoToEntity(e)));
-		terminosEntity.stream().forEach(e -> {
-			log.info("Value Entity: " + e.toString());
-			terminosDTO.add(converter.convertEntityToDto(repository.save(e)));
+		/*
+		 * terminos.stream().forEach((e) ->
+		 * terminosEntity.add(converter.convertDtoToEntity(e)));
+		 * terminosEntity.stream().forEach(e -> { log.info("Value Entity: " +
+		 * e.toString());
+		 * terminosDTO.add(converter.convertEntityToDto(repository.save(e))); });
+		 */
+		/*terminos.stream().forEach(e -> {
+			try {
+				terminosDTO.add(addTermino(e));
+			} catch (Exception e1) {
+				log.error(String.format("Exception: %s", e1));
+				rollBack = true;
+			}
 		});
+
+		if (Boolean.TRUE.equals(rollBack) && !terminosDTO.isEmpty()) {
+			terminosDTO.stream().forEach(e -> log.info(String.format("Datos Rollback: %s", e)));
+		}
 		return terminosDTO;
-	}
+	}*/
 
 }

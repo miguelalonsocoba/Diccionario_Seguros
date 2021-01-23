@@ -83,7 +83,7 @@ public class DiccionarioController {
 	 * 
 	 * @param request of String
 	 * @return Object String
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@ApiOperation(code = Constants.STATUSOK, value = "Agrega un Termino.", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
@@ -161,6 +161,11 @@ public class DiccionarioController {
 		return response;
 	}
 
+	/**
+	 * Obtiene un termino a partir de su nombre.
+	 * 
+	 * return List TerminoDTO
+	 */
 	@ApiOperation(value = "Obtiene termino(s)", notes = "Obtendra los terminos que coincidan con el valor que se pasa como parametro.")
 	@ApiResponses(value = {
 			@ApiResponse(code = Constants.STATUSOK, message = "Consulta exitosa.", response = TerminoDTO.class, responseContainer = "List"),
@@ -192,10 +197,32 @@ public class DiccionarioController {
 		return oMapper.writeValueAsString(response);
 	}
 
-	@PostMapping(path = "bulkLoad", produces = "application/json", consumes = "application/json")
-	public List<TerminoDTO> bulkLoad(@RequestBody List<TerminoDTO> terminos) throws Exception {
-		log.info("bulkLoad() >>>>> request: " + terminos.toString());
-		return serviceDiccionario.bulkLoad(terminos);
+	/**
+	 * Elimina todas las coincidencias a partir del nombre proporcionado.
+	 * 
+	 * @param termino the termino
+	 * @return object String
+	 * @throws Exception the Exception
+	 */
+	@ApiOperation(value = "Delete Termino(s)", notes = "Elimina todas las coincidencias a partir del nombre proporcionado.")
+	@ApiResponses({ @ApiResponse(code = Constants.STATUSOK, message = "Eliminacion exitosa", response = String.class),
+			@ApiResponse(code = 400, message = "Conflicto interno en el proceso."),
+			@ApiResponse(code = 500, message = "Conflicto con el Servidor."),
+			@ApiResponse(code = 503, message = "Servicio no Disponible.") })
+	@DeleteMapping(path = "deleteByName")
+	public String deleteByName(@RequestParam(name = "termino", required = true) final String termino) throws Exception {
+		log.info("deleteByName() >>>>> requestParam: " + termino);
+		Long response = serviceDiccionario.deleteByName(termino);
+		log.info("deleteByName() <<<<< response: " + termino);
+		return Constants.MESSAGE_ELEMENTS_DELETE + response;
 	}
+
+	/*
+	 * @PostMapping(path = "bulkLoad", produces = "application/json", consumes =
+	 * "application/json") public List<TerminoDTO> bulkLoad(@RequestBody
+	 * List<TerminoDTO> terminos) throws Exception {
+	 * log.info("bulkLoad() >>>>> request: " + terminos.toString()); return
+	 * serviceDiccionario.bulkLoad(terminos); }
+	 */
 
 }

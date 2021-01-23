@@ -19,7 +19,7 @@ import lombok.ToString;
  * The Class Termino.
  */
 @Entity
-@Table(name = "TERMINOS")
+@Table(name = "terminos")
 @Getter
 @Setter
 @AllArgsConstructor
