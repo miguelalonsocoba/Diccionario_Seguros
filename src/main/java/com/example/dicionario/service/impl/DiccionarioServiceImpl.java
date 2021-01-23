@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.dicionario.dto.TerminoDTO;
 import com.example.dicionario.entity.Termino;
+import com.example.dicionario.entity.Response.ResponseBulkLoad;
 import com.example.dicionario.repository.TerminoRepository;
 import com.example.dicionario.service.IDiccionarioService;
 import com.example.dicionario.util.convert.ConvertTermino;
@@ -43,9 +44,15 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 
 	/** The list terminos dto. */
 	List<TerminoDTO> terminosDTO = new ArrayList<>();
+	
+	/** Almacena los terminos que no se guardaran en la BD porque ya existe un termino con nombre igual. */
+	List<TerminoDTO> terminosExistentes = new ArrayList<>();
 
 	/** Indica si se realizara un rollBack. */
 	Boolean rollBack = false;
+	
+	/** Representa los datos que se cargan y lo que no se cargan en la BD. */
+	private ResponseBulkLoad responseBulkLoad = new ResponseBulkLoad();
 
 	/**
 	 * Get Termino.
@@ -183,8 +190,8 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	/**
 	 * Realiza la carga masiva de datos.
 	 */
-	/*@Override
-	public List<TerminoDTO> bulkLoad(List<TerminoDTO> terminos) throws Exception {
+	@Override
+	public ResponseBulkLoad bulkLoad(List<TerminoDTO> terminos) throws Exception {
 		log.info("bulkLoad() >>>>> Param: " + terminos.toString());
 		/*
 		 * terminos.stream().forEach((e) ->
@@ -193,19 +200,22 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 		 * e.toString());
 		 * terminosDTO.add(converter.convertEntityToDto(repository.save(e))); });
 		 */
-		/*terminos.stream().forEach(e -> {
+		terminos.stream().forEach(e -> {
 			try {
 				terminosDTO.add(addTermino(e));
 			} catch (Exception e1) {
 				log.error(String.format("Exception: %s", e1));
+				terminosExistentes.add(e);
+				log.info("Terminos que ya existen en la BD, no fueron almacenados: " + terminosExistentes.toString());
 				rollBack = true;
 			}
 		});
+		responseBulkLoad.setLoadedData(terminosDTO);
+		responseBulkLoad.setDataNoLoaded(terminosExistentes);
+		log.info("Terminos insertados: " + responseBulkLoad.getLoadedData().toString());
+		log.info("Terminos no insertados: " + responseBulkLoad.getDataNoLoaded().toString());
 
-		if (Boolean.TRUE.equals(rollBack) && !terminosDTO.isEmpty()) {
-			terminosDTO.stream().forEach(e -> log.info(String.format("Datos Rollback: %s", e)));
-		}
-		return terminosDTO;
-	}*/
+		return responseBulkLoad;
+	}
 
 }

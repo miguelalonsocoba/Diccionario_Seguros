@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dicionario.constants.Constants;
 import com.example.dicionario.dto.TerminoDTO;
+import com.example.dicionario.entity.Response.ResponseBulkLoad;
 import com.example.dicionario.exceptions.ProxyException;
 import com.example.dicionario.service.IDiccionarioService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -217,12 +218,10 @@ public class DiccionarioController {
 		return Constants.MESSAGE_ELEMENTS_DELETE + response;
 	}
 
-	/*
-	 * @PostMapping(path = "bulkLoad", produces = "application/json", consumes =
-	 * "application/json") public List<TerminoDTO> bulkLoad(@RequestBody
-	 * List<TerminoDTO> terminos) throws Exception {
-	 * log.info("bulkLoad() >>>>> request: " + terminos.toString()); return
-	 * serviceDiccionario.bulkLoad(terminos); }
-	 */
+	@PostMapping(path = "bulkLoad", produces = "application/json", consumes = "application/json")
+	public ResponseBulkLoad bulkLoad(@RequestBody List<TerminoDTO> terminos) throws Exception {
+		log.info("bulkLoad() >>>>> request: " + terminos.toString());
+		return serviceDiccionario.bulkLoad(terminos);
+	}
 
 }
