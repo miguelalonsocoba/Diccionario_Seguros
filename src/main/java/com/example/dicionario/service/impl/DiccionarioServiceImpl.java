@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.dicionario.dto.TerminoDTO;
 import com.example.dicionario.entity.Termino;
-import com.example.dicionario.entity.Response.ResponseBulkLoad;
+import com.example.dicionario.entity.response.ResponseBulkLoad;
 import com.example.dicionario.repository.TerminoRepository;
 import com.example.dicionario.service.IDiccionarioService;
 import com.example.dicionario.util.convert.ConvertTermino;
@@ -61,11 +61,11 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	 * Get Termino.
 	 */
 	@Override
-	public TerminoDTO getTerminoId(Integer idTermino) {
+	public TerminoDTO getTerminoId(final Integer idTermino) {
 		log.info(String.format("getTerminoId()>>>>>> termino: %s", idTermino));
 		try {
 			Optional<Termino> terminoEntityResponse = repository.findById(idTermino);
-			TerminoDTO responesDto = converter.convertEntityToDto(terminoEntityResponse.get());
+			TerminoDTO responesDto = converter.convertEntityToDto(terminoEntityResponse.orElse(null));
 			log.info(String.format("getTerminoId()<<<<<< message: %s", responesDto));
 			return responesDto;
 		} catch (NoSuchElementException e) {
@@ -81,7 +81,7 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	 * @throws Exception
 	 */
 	@Override
-	public TerminoDTO addTermino(TerminoDTO terminoDto) throws Exception {
+	public TerminoDTO addTermino(final TerminoDTO terminoDto) throws Exception {
 		log.info(String.format("addTermino() >>>>> termino: %s", terminoDto.toString()));
 		try {
 			log.info("Validando parametros del objeto.");
@@ -106,7 +106,7 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	 * Elimina un termino a partir de un ID.
 	 */
 	@Override
-	public String deleteById(Integer id) {
+	public String deleteById(final Integer id) {
 		log.info(String.format("deleteById() >>>>> id: %s", id));
 		try {
 			repository.deleteById(id);
@@ -139,7 +139,7 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	 * Obtiene terminos que coincidan con el nombre indicado.
 	 */
 	@Override
-	public List<TerminoDTO> getTerminoByNombre(String termino) {
+	public List<TerminoDTO> getTerminoByNombre(final String termino) {
 		log.info("getTerminoByNombre() >>>>");
 		List<Termino> responseEntity = repository.findByNombreTermino(termino);
 		if (responseEntity.isEmpty()) {
@@ -161,7 +161,7 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	 * @throws Exception
 	 */
 	@Override
-	public TerminoDTO updateTermino(TerminoDTO termino) throws Exception {
+	public TerminoDTO updateTermino(final TerminoDTO termino) throws Exception {
 		log.info("updateTermino >>>> request: %s" + termino.toString());
 		try {
 			log.info("Validando parametros del objeto.");
@@ -183,7 +183,7 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	}
 
 	@Override
-	public Long deleteByName(String termino) throws Exception {
+	public Long deleteByName(final String termino) throws Exception {
 		log.info("deleteByName() >>>>> - Param: " + termino);
 		Long response = repository.deleteByNombreTermino(termino);
 		log.info("deleteByName() <<<<< - Return/Response: " + response);
@@ -194,15 +194,8 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 	 * Realiza la carga masiva de datos.
 	 */
 	@Override
-	public ResponseBulkLoad bulkLoad(List<TerminoDTO> terminos, String rollBack) throws Exception {
+	public ResponseBulkLoad bulkLoad(final List<TerminoDTO> terminos, final String rollBack) throws Exception {
 		log.info("bulkLoad() >>>>> Param: " + terminos.toString());
-		/*
-		 * terminos.stream().forEach((e) ->
-		 * terminosEntity.add(converter.convertDtoToEntity(e)));
-		 * terminosEntity.stream().forEach(e -> { log.info("Value Entity: " +
-		 * e.toString());
-		 * terminosDTO.add(converter.convertEntityToDto(repository.save(e))); });
-		 */
 		terminosDTO = new ArrayList<>();
 		terminosExistentes = new ArrayList<>();
 		terminos.stream().forEach(e -> {

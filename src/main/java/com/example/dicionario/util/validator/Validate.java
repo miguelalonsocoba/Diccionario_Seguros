@@ -2,6 +2,7 @@ package com.example.dicionario.util.validator;
 
 import org.springframework.util.StringUtils;
 
+import com.example.dicionario.constants.Constants;
 import com.example.dicionario.dto.TerminoDTO;
 
 /**
@@ -16,13 +17,13 @@ public class Validate {
 	 */
 	public void validateTerminoNull(TerminoDTO termino) {
 		checkOrElseThrow(StringUtils.isEmpty(termino.getCategoria()),
-				String.format("El parametro %s es obligatorio", "Categoria"));
+				String.format(Constants.MESSAGE_ELEMENT_REQUIRED, "Categoria"));
 		checkOrElseThrow(StringUtils.isEmpty(termino.getDescripcion()),
-				String.format("El parametro %s es obligatorio", "Descripcion"));
+				String.format(Constants.MESSAGE_ELEMENT_REQUIRED, "Descripcion"));
 		checkOrElseThrow(StringUtils.isEmpty(termino.getEjemplo()),
 				String.format("El parametrp %s es obligatorio", "Ejemplo"));
 		checkOrElseThrow(StringUtils.isEmpty(termino.getNombreTermino()),
-				String.format("El parametro %s es obligatorio", "NombreTermino"));
+				String.format(Constants.MESSAGE_ELEMENT_REQUIRED, "NombreTermino"));
 	}
 
 	/**

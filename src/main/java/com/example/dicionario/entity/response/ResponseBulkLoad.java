@@ -1,4 +1,4 @@
-package com.example.dicionario.entity.Response;
+package com.example.dicionario.entity.response;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -14,7 +14,7 @@ import com.example.dicionario.entity.Termino;
  * Class ConverterTerminoTest.
  *
  */
-public class ConvertTerminoTest {
+class ConvertTerminoTest {
 
 	/** The converter. */
 	private ConvertTermino convert;
@@ -39,7 +39,7 @@ public class ConvertTerminoTest {
 	 * Comprueba que el objeto no es nulo.
 	 */
 	@Test
-	public void convertDtoToEntityTestIsNotNull() {
+	void convertDtoToEntityTestIsNotNull() {
 		Termino termino = convert.convertDtoToEntity(getTerminoDTO());
 		assertNotNull(termino);
 	}
@@ -48,7 +48,7 @@ public class ConvertTerminoTest {
 	 * Comprueba que el objeto es el esperado.
 	 */
 	@Test
-	public void convertDtoToEntotyTestObjectEsperado() {
+	void convertDtoToEntotyTestObjectEsperado() {
 		Termino termino = convert.convertDtoToEntity(getTerminoDTO());
 
 		assertEquals(getTerminoDTO().getCategoria(), termino.getCategoria());
@@ -59,7 +59,7 @@ public class ConvertTerminoTest {
 	 * exception de tipo NullPointerException..
 	 */
 	@Test
-	public void convertDtoToEntityObjectNull() {
+	void convertDtoToEntityObjectNull() {
 		try {
 			convert.convertDtoToEntity(new TerminoDTO());
 		} catch (NullPointerException e) {
@@ -73,7 +73,7 @@ public class ConvertTerminoTest {
 	 * manda un parametro nulo,
 	 */
 	@Test
-	public void convertDtoToEntityParamNombreTerminoNull() {
+	void convertDtoToEntityParamNombreTerminoNull() {
 		TerminoDTO termminoDto = new TerminoDTO();
 		termminoDto.setCategoria("Categoria");
 		termminoDto.setDescripcion("Descripcion");
@@ -90,7 +90,7 @@ public class ConvertTerminoTest {
 	 * manda un parametro nulo,
 	 */
 	@Test
-	public void convertDtoToEntityParamDescripcionNull() {
+	void convertDtoToEntityParamDescripcionNull() {
 		TerminoDTO termminoDto = new TerminoDTO();
 		termminoDto.setCategoria("Categoria");
 		termminoDto.setEjemplo("Ejemplo");
@@ -107,7 +107,7 @@ public class ConvertTerminoTest {
 	 * manda un parametro nulo,
 	 */
 	@Test
-	public void convertDtoToEntityParamEjemploNull() {
+	void convertDtoToEntityParamEjemploNull() {
 		TerminoDTO termminoDto = new TerminoDTO();
 		termminoDto.setCategoria("Categoria");
 		termminoDto.setDescripcion("Descripcion");
@@ -124,7 +124,7 @@ public class ConvertTerminoTest {
 	 * manda un parametro nulo,
 	 */
 	@Test
-	public void convertDtoToEntityParamCategoriaNull() {
+	void convertDtoToEntityParamCategoriaNull() {
 		TerminoDTO termminoDto = new TerminoDTO();
 		termminoDto.setNombreTermino("NombreTermino");
 		termminoDto.setDescripcion("Descripcion");
@@ -140,7 +140,7 @@ public class ConvertTerminoTest {
 	 * Comprueba que el objeto de retorno no es null.
 	 */
 	@Test
-	public void convertEntityToDtoTestReturnNotNull() {
+	void convertEntityToDtoTestReturnNotNull() {
 		TerminoDTO response = convert.convertEntityToDto(getTermino());
 
 		assertNotNull(response);
@@ -150,7 +150,7 @@ public class ConvertTerminoTest {
 	 * Comprueba que el objeto de retorno es el esperado.
 	 */
 	@Test
-	public void convertEntityToDtoTestReturnEsperado() {
+	void convertEntityToDtoTestReturnEsperado() {
 		TerminoDTO response = convert.convertEntityToDto(getTermino());
 
 		assertEquals(getTerminoDTO().getCategoria(), response.getCategoria(), "The objects are not smae.");
@@ -163,7 +163,7 @@ public class ConvertTerminoTest {
 	 * Comprueba que retorna una Exception de tipo NullPointerException.
 	 */
 	@Test
-	public void convertEntityToDtoTestError() {
+	void convertEntityToDtoTestError() {
 		try {
 			convert.convertEntityToDto(new Termino());
 		} catch (NullPointerException e) {
@@ -177,7 +177,7 @@ public class ConvertTerminoTest {
 	 * parametro es nulo.
 	 */
 	@Test
-	public void convertEntityToDtoTestParamIdNull() {
+	void convertEntityToDtoTestParamIdNull() {
 		Termino termino = new Termino();
 		termino.setCategoria("Categoria");
 		termino.setDescripcion("Descripcion");
@@ -196,7 +196,7 @@ public class ConvertTerminoTest {
 	 * parametro es nulo.
 	 */
 	@Test
-	public void convertEntityToDtoTestParamNombreTerminoNull() {
+	void convertEntityToDtoTestParamNombreTerminoNull() {
 		Termino termino = new Termino();
 		termino.setCategoria("Categoria");
 		termino.setDescripcion("Descripcion");
@@ -215,7 +215,7 @@ public class ConvertTerminoTest {
 	 * parametro es nulo.
 	 */
 	@Test
-	public void convertEntityToDtoTestParamDescripcionNull() {
+	void convertEntityToDtoTestParamDescripcionNull() {
 		Termino termino = new Termino();
 		termino.setCategoria("Categoria");
 		termino.setId(3);
@@ -234,7 +234,7 @@ public class ConvertTerminoTest {
 	 * parametro es nulo.
 	 */
 	@Test
-	public void convertEntityToDtoTestParamEjemploNull() {
+	void convertEntityToDtoTestParamEjemploNull() {
 		Termino termino = new Termino();
 		termino.setCategoria("Categoria");
 		termino.setDescripcion("Descripcion");
@@ -253,7 +253,7 @@ public class ConvertTerminoTest {
 	 * parametro es nulo.
 	 */
 	@Test
-	public void convertEntityToDtoTestParamCategorioNull() {
+	void convertEntityToDtoTestParamCategorioNull() {
 		Termino termino = new Termino();
 		termino.setId(2);
 		termino.setDescripcion("Descripcion");
