@@ -59,12 +59,21 @@ public interface IDiccionarioService {
 	TerminoDTO updateTermino(TerminoDTO termino) throws Exception;
 
 	/**
+	 * Elimina un termino a partir de su nombre.
+	 * 
+	 * @param termino the termino
+	 * @return object Long
+	 * @throws Exception
+	 */
+	Long deleteByName(String termino) throws Exception;
+
+	/**
 	 * Realiza una carga masiva de terminos.
 	 * 
 	 * @param terminos of Termino
 	 * @return list TerminoDTO
 	 * @throws Exception
 	 */
-	List<TerminoDTO> bulkLoad(List<TerminoDTO> terminos) throws Exception;
+	// List<TerminoDTO> bulkLoad(List<TerminoDTO> terminos) throws Exception;
 
 }

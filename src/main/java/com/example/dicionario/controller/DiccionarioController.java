@@ -83,7 +83,7 @@ public class DiccionarioController {
 	 * 
 	 * @param request of String
 	 * @return Object String
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@ApiOperation(code = Constants.STATUSOK, value = "Agrega un Termino.", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
@@ -161,6 +161,11 @@ public class DiccionarioController {
 		return response;
 	}
 
+	/**
+	 * Obtiene un termino a partir de su nombre.
+	 * 
+	 * return List TerminoDTO
+	 */
 	@ApiOperation(value = "Obtiene termino(s)", notes = "Obtendra los terminos que coincidan con el valor que se pasa como parametro.")
 	@ApiResponses(value = {
 			@ApiResponse(code = Constants.STATUSOK, message = "Consulta exitosa.", response = TerminoDTO.class, responseContainer = "List"),
@@ -191,11 +196,21 @@ public class DiccionarioController {
 		TerminoDTO response = serviceDiccionario.updateTermino(termino);
 		return oMapper.writeValueAsString(response);
 	}
-
-	@PostMapping(path = "bulkLoad", produces = "application/json", consumes = "application/json")
-	public List<TerminoDTO> bulkLoad(@RequestBody List<TerminoDTO> terminos) throws Exception {
-		log.info("bulkLoad() >>>>> request: " + terminos.toString());
-		return serviceDiccionario.bulkLoad(terminos);
+	
+	@DeleteMapping(path = "deleteByTName")
+	public String deleteByName(@RequestParam(name = "termino", required = true) final String termino) throws Exception {
+		log.info("deleteByName() >>>>> requestParam: " + termino);
+		Long response = serviceDiccionario.deleteByName(termino);
+		log.info("deleteByName() <<<<< response: " + termino);
+		return Constants.messageElementsDelete + response;
 	}
+
+	/*
+	 * @PostMapping(path = "bulkLoad", produces = "application/json", consumes =
+	 * "application/json") public List<TerminoDTO> bulkLoad(@RequestBody
+	 * List<TerminoDTO> terminos) throws Exception {
+	 * log.info("bulkLoad() >>>>> request: " + terminos.toString()); return
+	 * serviceDiccionario.bulkLoad(terminos); }
+	 */
 
 }

@@ -13,5 +13,7 @@ public final class Constants {
 
 	/** The Constant status_ok. */
 	public static final int STATUSOK = 200;
+	
+	public static final String messageElementsDelete = "Total de ocurrencias eliminadas: ";
 
 }
