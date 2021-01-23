@@ -14,6 +14,7 @@ public final class Constants {
 	/** The Constant status_ok. */
 	public static final int STATUSOK = 200;
 	
-	public static final String messageElementsDelete = "Total de ocurrencias eliminadas: ";
+	/** The Constant message elements delete. */
+	public static final String MESSAGE_ELEMENTS_DELETE = "Total de ocurrencias eliminadas: ";
 
 }

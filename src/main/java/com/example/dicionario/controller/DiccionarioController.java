@@ -202,7 +202,7 @@ public class DiccionarioController {
 		log.info("deleteByName() >>>>> requestParam: " + termino);
 		Long response = serviceDiccionario.deleteByName(termino);
 		log.info("deleteByName() <<<<< response: " + termino);
-		return Constants.messageElementsDelete + response;
+		return Constants.MESSAGE_ELEMENTS_DELETE + response;
 	}
 
 	/*
