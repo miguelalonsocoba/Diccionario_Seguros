@@ -196,8 +196,20 @@ public class DiccionarioController {
 		TerminoDTO response = serviceDiccionario.updateTermino(termino);
 		return oMapper.writeValueAsString(response);
 	}
-	
-	@DeleteMapping(path = "deleteByTName")
+
+	/**
+	 * Elimina todas las coincidencias a partir del nombre proporcionado.
+	 * 
+	 * @param termino the termino
+	 * @return object String
+	 * @throws Exception the Exception
+	 */
+	@ApiOperation(value = "Delete Termino(s)", notes = "Elimina todas las coincidencias a partir del nombre proporcionado.")
+	@ApiResponses({ @ApiResponse(code = Constants.STATUSOK, message = "Eliminacion exitosa", response = String.class),
+			@ApiResponse(code = 400, message = "Conflicto interno en el proceso."),
+			@ApiResponse(code = 500, message = "Conflicto con el Servidor."),
+			@ApiResponse(code = 503, message = "Servicio no Disponible.") })
+	@DeleteMapping(path = "deleteByName")
 	public String deleteByName(@RequestParam(name = "termino", required = true) final String termino) throws Exception {
 		log.info("deleteByName() >>>>> requestParam: " + termino);
 		Long response = serviceDiccionario.deleteByName(termino);
