@@ -218,10 +218,26 @@ public class DiccionarioController {
 		return Constants.MESSAGE_ELEMENTS_DELETE + response;
 	}
 
+	/**
+	 * Realiza la carga masiva de datos.
+	 * 
+	 * @param terminos the terminos
+	 * @param rollBack the rollBack
+	 * @return object ResponseBulkLoad
+	 * @throws Exception the exception
+	 */
+	@ApiOperation(value = "BulkLoad", notes = "Realiza una carga masiva de datos. Si el parametre rollBack tiene valor de true este realizara un rollback de los datos insertados en la BD, esto siempre y cuando no se pueda insetar un elementeo de la lista por alguna razón.")
+	@ApiResponses({
+		@ApiResponse(code = Constants.STATUSOK, message = "Carga exitosa.", response = ResponseBulkLoad.class),
+		@ApiResponse(code = 400, message = "Conflicto interno en el proceso."),
+		@ApiResponse(code = 500, message = "Conflicto con el Servidor."),
+		@ApiResponse(code = 503, message = "Servicio no Disponible.")
+	})
 	@PostMapping(path = "bulkLoad", produces = "application/json", consumes = "application/json")
-	public ResponseBulkLoad bulkLoad(@RequestBody List<TerminoDTO> terminos) throws Exception {
-		log.info("bulkLoad() >>>>> request: " + terminos.toString());
-		return serviceDiccionario.bulkLoad(terminos);
+	public ResponseBulkLoad bulkLoad(@RequestBody final List<TerminoDTO> terminos,
+			@RequestParam(name = "rollBack") final String rollBack) throws Exception {
+		log.info("bulkLoad() >>>>> request: " + terminos.toString() + " - " + rollBack);
+		return serviceDiccionario.bulkLoad(terminos, rollBack);
 	}
 
 }

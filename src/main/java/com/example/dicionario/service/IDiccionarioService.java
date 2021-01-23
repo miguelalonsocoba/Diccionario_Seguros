@@ -75,6 +75,6 @@ public interface IDiccionarioService {
 	 * @return object ResponseBulkLoad
 	 * @throws Exception
 	 */
-	ResponseBulkLoad bulkLoad(List<TerminoDTO> terminos) throws Exception;
+	ResponseBulkLoad bulkLoad(List<TerminoDTO> terminos, String rollBack) throws Exception;
 
 }
