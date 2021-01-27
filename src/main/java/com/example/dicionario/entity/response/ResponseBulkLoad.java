@@ -26,7 +26,7 @@ public class ResponseBulkLoad {
 	/** Datos no cargados. */
 	List<TerminoDTO> dataNoLoaded;
 
-	/** Almacena el número total de datos eliminados por el rollBack. */
+	/** Almacena el numero total de datos eliminados por el rollBack. */
 	Long totalesRollBack;
 
 	public List<TerminoDTO> getLoadedData() {

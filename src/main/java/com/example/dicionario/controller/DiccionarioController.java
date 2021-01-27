@@ -239,7 +239,7 @@ public class DiccionarioController {
 	 * @return object ResponseBulkLoad
 	 * @throws Exception the exception
 	 */
-	@ApiOperation(value = "BulkLoad", notes = "Realiza una carga masiva de datos. Si el parametre rollBack tiene valor de true este realizara un rollback de los datos insertados en la BD, esto siempre y cuando no se pueda insetar un elementeo de la lista por alguna razón.")
+	@ApiOperation(value = "BulkLoad", notes = "Realiza una carga masiva de datos. Si el parametre rollBack tiene valor de true este realizara un rollback de los datos insertados en la BD, esto siempre y cuando no se pueda insetar un elementeo de la lista por alguna razon.")
 	@ApiResponses({
 			@ApiResponse(code = Constants.STATUSOK, message = "Carga exitosa.", response = ResponseBulkLoad.class),
 			@ApiResponse(code = 400, message = "Conflicto interno en el proceso."),
