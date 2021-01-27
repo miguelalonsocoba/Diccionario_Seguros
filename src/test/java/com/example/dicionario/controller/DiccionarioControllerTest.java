@@ -263,6 +263,22 @@ class DiccionarioControllerTest {
 	}
 
 	/**
+	 * Comprueba que devuelve una error de tipo Exception.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void addTerminoException() throws Exception {
+		TerminoDTO terminoDTO = getResponse();
+		when(service.addTermino(terminoDTO)).thenThrow(new Exception());
+		try {
+			diccionarioController.addTermino(terminoDTO);
+		} catch (Exception e) {
+			assertEquals(String.format("Fallo al insertar Termino: %s", "null"), e.getMessage());
+		}
+	}
+
+	/**
 	 * Metodo que retorna un objeto de Tipo TerminoDTO.
 	 * 
 	 * @return
