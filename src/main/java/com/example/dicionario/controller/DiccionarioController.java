@@ -242,7 +242,7 @@ public class DiccionarioController {
 	@ApiOperation(value = "BulkLoad", notes = "Realiza una carga masiva de datos. Si el parametre rollBack tiene valor de true este realizara un rollback de los datos insertados en la BD, esto siempre y cuando no se pueda insetar un elementeo de la lista por alguna razon.")
 	@ApiResponses({
 			@ApiResponse(code = Constants.STATUSOK, message = "Carga exitosa.", response = ResponseBulkLoad.class),
-			@ApiResponse(code = 400, message = "Conflicto interno en el proceso."),
+			@ApiResponse(code = 400, message = "Conflicto interno en el Proceso."),
 			@ApiResponse(code = 500, message = "Conflicto con el Servidor."),
 			@ApiResponse(code = 503, message = "Servicio no Disponible.") })
 	@PostMapping(path = "bulkLoad", produces = "application/json", consumes = "application/json")
