@@ -269,11 +269,12 @@ class DiccionarioControllerTest {
 	 */
 	@Test
 	void addTerminoException() throws Exception {
+		TerminoDTO terminoDTO = getResponse();
+		when(service.addTermino(terminoDTO)).thenThrow(new Exception());
 		try {
-			when(service.addTermino(ArgumentMatchers.any())).thenThrow(new Exception());
-			diccionarioController.addTermino(new TerminoDTO());
+			diccionarioController.addTermino(terminoDTO);
 		} catch (Exception e) {
-			assertEquals(String.format("Fallo al insertar Termino; %s", "Example"), e.getMessage());
+			assertEquals(String.format("Fallo al insertar Termino: %s", "null"), e.getMessage());
 		}
 	}
 
