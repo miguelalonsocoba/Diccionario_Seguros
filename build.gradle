@@ -51,6 +51,22 @@ jacocoTestReport {
 	dependsOn test // Tests are required to run before generating the report
 }
 
+build {
+	dependsOn jacocoTestCoverageVerification
+}
+
+jacocoTestCoverageVerification {
+  violationRules {
+    rule {
+      limit {
+        counter = 'LINE'
+        value = 'COVEREDRATIO'
+        minimum = 0.8
+      }
+    }
+  }
+}
+
 // Configuracion de los ajustes del complemento JaCoCo.
 jacoco {
 	toolVersion = "0.8.5" // Verion de los JAR de Jacoco a utilizar.
