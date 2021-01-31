@@ -1,5 +1,6 @@
 package com.example.dicionario.service.impl;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
@@ -19,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.example.dicionario.dto.TerminoDTO;
 import com.example.dicionario.entity.Termino;
+import com.example.dicionario.entity.response.ResponseBulkLoad;
 import com.example.dicionario.repository.TerminoRepository;
 import com.example.dicionario.util.convert.ConvertTermino;
 
@@ -151,7 +153,26 @@ class DiccionarioServiceImplTest {
 	}
 
 	/**
-	 * Comprueba que el response no sea nulo.
+	 * Comprueba que retorna una Exception.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void addTerminoTestTerminoAlreadyExistsExcpetion() throws Exception {
+		List<Termino> terminos = new ArrayList<>();
+		terminos.add(getTermino());
+		when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(terminos);
+		when(comverter.convertDtoToEntity(ArgumentMatchers.any(TerminoDTO.class))).thenReturn(getTermino());
+
+		try {
+			diccionarioService.addTermino(getTerminoDTO());
+		} catch (Exception e) {
+			assertEquals("El termino Example ya existe...", e.getMessage());
+		}
+	}
+
+	/**
+	 * Comprueba que el response no sea null.
 	 */
 	@Test
 	void deleteByIdTestResponseNotNull() {
@@ -159,6 +180,20 @@ class DiccionarioServiceImplTest {
 		String response = diccionarioService.deleteById(3);
 
 		assertNotNull(response, "The objecto is null");
+	}
+
+	/**
+	 * Comprueba que retorna un IllegalArgumentException.
+	 */
+	@Test
+	void deleteByIdTestIllegalArgumentException() {
+		DiccionarioServiceImpl serviceImpl = new DiccionarioServiceImpl();
+
+		try {
+			serviceImpl.deleteById(1000000);
+		} catch (Exception e) {
+			assertEquals("El id 1000000 no existe.", e.getMessage());
+		}
 	}
 
 	/**
@@ -183,14 +218,6 @@ class DiccionarioServiceImplTest {
 		}
 
 	}
-
-	/**
-	 * Comprueba que retorna una exception de tipo IllegalArgumentException.
-	 */
-//	@Test
-//	 void deleteByIdTestExceptionIllegalArgumentException() {
-//		
-//	}
 
 	/**
 	 * Comprueba que el objeto retornado no es nulo.
@@ -358,6 +385,130 @@ class DiccionarioServiceImplTest {
 			assertEquals("El parametro Categoria es obligatorio", e.getMessage());
 		}
 
+	}
+
+	/**
+	 * Comprueba que se ejecuta correctamente el metodo.
+	 */
+	@Test
+	void deletByNameTestOk() {
+		when(repository.deleteByNombreTermino(ArgumentMatchers.anyString())).thenReturn(2L);
+		try {
+			Long response = diccionarioService.deleteByName("Example");
+			assertEquals(2, response);
+		} catch (Exception e) {
+			assert (false);
+		}
+	}
+
+	/**
+	 * Comprueba que el metodo funciona correctamente.
+	 */
+	@Test
+	void bulkLoadTestOk() {
+		List<TerminoDTO> terminoDTOs = new ArrayList<>();
+		terminoDTOs.add(getTerminoDTO());
+
+		try {
+			when(comverter.convertDtoToEntity(ArgumentMatchers.any(TerminoDTO.class))).thenReturn(getTermino());
+			when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(new ArrayList<>());
+			when(repository.save(ArgumentMatchers.any(Termino.class))).thenReturn(getTermino());
+			when(comverter.convertEntityToDto(ArgumentMatchers.any(Termino.class))).thenReturn(getTerminoDTO());
+
+			ResponseBulkLoad response = diccionarioService.bulkLoad(terminoDTOs, "false");
+			assertEquals("Example", response.getLoadedData().get(0).getNombreTermino());
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+
+	}
+
+	/**
+	 * Comprueba que el metodo funciona con la vandera de rollback.
+	 */
+	@Test
+	void bulkLoadTestConRollBackOk() {
+		List<TerminoDTO> terminoDTOs = new ArrayList<>();
+		terminoDTOs.add(getTerminoDTO());
+
+		try {
+			when(comverter.convertDtoToEntity(ArgumentMatchers.any(TerminoDTO.class))).thenReturn(getTermino());
+			when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(new ArrayList<>());
+			when(repository.save(ArgumentMatchers.any(Termino.class))).thenReturn(getTermino());
+			when(comverter.convertEntityToDto(ArgumentMatchers.any(Termino.class))).thenReturn(getTerminoDTO());
+
+			ResponseBulkLoad response = diccionarioService.bulkLoad(terminoDTOs, "true");
+			assertEquals("Example", response.getLoadedData().get(0).getNombreTermino());
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * Comprueba que el metodo retorna una Exception en el momento de guardar.
+	 */
+	@Test
+	void bulkLoadTestExceptionSave() {
+		List<TerminoDTO> terminoDTOs = new ArrayList<>();
+		terminoDTOs.add(getTerminoDTO());
+
+		List<Termino> terminos = new ArrayList<>();
+		terminos.add(getTermino());
+
+		try {
+			when(comverter.convertDtoToEntity(ArgumentMatchers.any(TerminoDTO.class))).thenReturn(getTermino());
+			when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(terminos);
+
+			ResponseBulkLoad response = diccionarioService.bulkLoad(terminoDTOs, "false");
+			assertEquals("Example", response.getDataNoLoaded().get(0).getNombreTermino());
+		} catch (Exception e) {
+			assert (false);
+		}
+
+	}
+
+	/**
+	 * Comprueba que el metodo retorna una Exception en el RollBack.
+	 */
+	@Test
+	void bulkLoadTestConRollBackException() {
+		List<TerminoDTO> terminoDTOs = new ArrayList<>();
+		terminoDTOs.add(getTerminoDTO());
+
+		try {
+			when(comverter.convertDtoToEntity(ArgumentMatchers.any(TerminoDTO.class))).thenReturn(getTermino());
+			when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(new ArrayList<>());
+			when(repository.save(ArgumentMatchers.any(Termino.class))).thenReturn(getTermino());
+			when(comverter.convertEntityToDto(ArgumentMatchers.any(Termino.class))).thenReturn(getTerminoDTO());
+			when(repository.deleteByNombreTermino(ArgumentMatchers.anyString())).thenReturn(null);
+
+			diccionarioService.bulkLoad(terminoDTOs, "true");
+		} catch (Exception e) {
+			System.err.println("Error: " + e.getMessage());
+			assertEquals ("Error: ", e.getMessage());
+		}
+	}
+	
+	/**
+	 * Comprueba que el metodo funciona con la vandera de rollback y el objeto vacio.
+	 */
+	@Test
+	void bulkLoadTestConRollBackOkObjectEmpty() {
+		List<TerminoDTO> terminoDTOs = new ArrayList<>();
+		terminoDTOs.add(getTerminoDTO());
+
+		try {
+			when(comverter.convertDtoToEntity(ArgumentMatchers.any(TerminoDTO.class))).thenReturn(getTermino());
+			when(repository.findByNombreTermino(ArgumentMatchers.anyString())).thenReturn(new ArrayList<>());
+			when(repository.save(ArgumentMatchers.any(Termino.class))).thenReturn(null);
+			when(comverter.convertEntityToDto(ArgumentMatchers.any(Termino.class))).thenReturn(getTerminoDTO());
+
+			ResponseBulkLoad response = diccionarioService.bulkLoad(terminoDTOs, "true");
+			assertEquals(1, response.getDataNoLoaded().size());
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+			assert (false);
+		}
 	}
 
 	/**

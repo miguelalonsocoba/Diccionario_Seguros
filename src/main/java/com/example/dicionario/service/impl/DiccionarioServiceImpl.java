@@ -112,9 +112,9 @@ public class DiccionarioServiceImpl implements IDiccionarioService {
 			repository.deleteById(id);
 			log.info(String.format("deleteById() <<<<< response: %s", "Correct"));
 			return "Success ok";
-		} catch (IllegalArgumentException e) {
+		} catch (Exception e) {
 			log.error(String.format("IllegalArgumentException: %s", e.getMessage()));
-			throw new IllegalArgumentException("El id no existe. " + e.getMessage());
+			throw new IllegalArgumentException(String.format("El id %s no existe.", id));
 		}
 	}
 
