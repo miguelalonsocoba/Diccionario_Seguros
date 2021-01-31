@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.example.dicionario.constants.Constants;
 import com.example.dicionario.dto.TerminoDTO;
+import com.example.dicionario.entity.response.ResponseBulkLoad;
 import com.example.dicionario.exceptions.ProxyException;
 import com.example.dicionario.service.impl.DiccionarioServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -276,6 +277,48 @@ class DiccionarioControllerTest {
 		} catch (Exception e) {
 			assertEquals(String.format("Fallo al insertar Termino: %s", "null"), e.getMessage());
 		}
+	}
+
+	/**
+	 * Conprueba que retorna un mensaje del termino eliminado y el numero de
+	 * ocurrencias aliminadas.
+	 * 
+	 * @throws Exception the exception
+	 */
+	@Test
+	void deleteByNameTestOk() throws Exception {
+		when(service.deleteByName(ArgumentMatchers.anyString())).thenReturn(3L);
+		String response = diccionarioController.deleteByName("Example");
+		assertEquals(Constants.MESSAGE_ELEMENTS_DELETE + 3, response);
+	}
+
+	/**
+	 * Comprueba que el metodo funcione correctamente.
+	 * 
+	 * @throws Exception the exception
+	 */
+	@Test
+	void bulkLoadTestOk() throws Exception {
+		ResponseBulkLoad responseO = new ResponseBulkLoad();
+
+		List<TerminoDTO> loadedData = new ArrayList<>();
+		loadedData.add(getResponse());
+		responseO.setLoadedData(loadedData);
+
+		List<TerminoDTO> dataNoLoaded = new ArrayList<>();
+		dataNoLoaded.add(getResponse());
+		responseO.setDataNoLoaded(dataNoLoaded);
+
+		responseO.setTotalesRollBack(3L);
+
+		List<TerminoDTO> request = new ArrayList<>();
+		request.add(getResponse());
+
+		when(service.bulkLoad(ArgumentMatchers.anyList(), ArgumentMatchers.anyString())).thenReturn(responseO);
+
+		ResponseBulkLoad response = diccionarioController.bulkLoad(request, "true");
+
+		assertEquals(responseO.getTotalesRollBack(), response.getTotalesRollBack());
 	}
 
 	/**
