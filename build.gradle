@@ -63,6 +63,9 @@ jacocoTestCoverageVerification {
         value = 'COVEREDRATIO'
         minimum = 0.8
       }
+      excludes = [
+      	'com.example.diccionario.constants'
+      ]
     }
   }
 }
