@@ -58,13 +58,17 @@ build {
 jacocoTestCoverageVerification {
   violationRules {
     rule {
+    element = 'CLASS'
       limit {
-        counter = 'LINE'
+        counter = 'CLASS'//Se realiza la cobertura a nivel de Clase.
         value = 'COVEREDRATIO'
-        minimum = 0.8
+        minimum = 0.9
       }
+      //Exluir clases.
       excludes = [
-      	'com.example.diccionario.constants'
+      	'com.example.dicionario.exceptions.*',
+      	'com.example.dicionario.util.exceptions*',
+      	'com.example.dicionario.entity*'
       ]
     }
   }
