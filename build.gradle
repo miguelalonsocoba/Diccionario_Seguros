@@ -90,6 +90,6 @@ jacocoTestCoverageVerification {
 // Configuracion de los ajustes del complemento JaCoCo.
 jacoco {
 	toolVersion = "0.8.5" // Verion de los JAR de Jacoco a utilizar.
-	//reportsDir = file("$buildDir/customJacocoReportDir") // El directorio donde se generaran los informas
+	reportsDir = file("$buildDir/customJacocoReportDir") // El directorio donde se generaran los informas
 }
 
