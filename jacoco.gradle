@@ -1,0 +1,44 @@
+jacocoTestReport {
+	dependsOn test // Tests are required to run before generating the report
+	// Excluir las clases en el reporte que se genera de la cobertura.
+	afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+	        	'com/example/dicionario/exceptions/**',
+      			'com/example/dicionario/util/exceptions/**',
+      			'com/example/dicionario/entity/**',
+      			'com/example/dicionario/DiccionarioSegurosApplication**'
+
+	      ])
+        }))
+    }
+}
+
+build {
+	dependsOn jacocoTestCoverageVerification
+}
+
+jacocoTestCoverageVerification {
+  violationRules {
+    rule {
+    element = 'CLASS'
+      limit {
+        counter = 'CLASS'//Se realiza la cobertura a nivel de Clase.
+        value = 'COVEREDRATIO'
+        minimum = 1.0
+      }
+      //Exluir clases en la cobertura.
+      excludes = [
+      	'com.example.dicionario.exceptions*',
+      	'com.example.dicionario.util.exceptions*',
+      	'com.example.dicionario.entity*',
+      	'com.example.dicionario.DiccionarioSegurosApplication'
+      ]
+    }
+  }
+}
+
+jacoco {
+	toolVersion = "0.8.5" // Verion de los JAR de Jacoco a utilizar.
+	reportsDir = file("$buildDir/customJacocoReportDir") // El directorio donde se generaran los informas
+}
