@@ -65,6 +65,11 @@ class DiccionarioControllerTest {
 		try {
 			when(service.getTerminoId(6)).thenReturn(getResponse());
 			when(oMapper.writeValueAsString(ArgumentMatchers.any())).thenThrow(new JsonProcessingException("Error") {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -4546101708947422408L;
 			});
 			diccionarioController.getTerminoID(6);
 		} catch (Exception e) {
@@ -108,6 +113,11 @@ class DiccionarioControllerTest {
 		try {
 			when(service.addTermino(ArgumentMatchers.any())).thenReturn(getResponse());
 			when(oMapper.writeValueAsString(ArgumentMatchers.any())).thenThrow(new JsonProcessingException("Error") {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -2444744380074718246L;
 			});
 			diccionarioController.addTermino(getResponse());
 		} catch (Exception e) {
@@ -153,7 +163,7 @@ class DiccionarioControllerTest {
 	void deletTerminoTestExecuteService() throws Exception {
 		Integer idTermino = 9;
 
-		String response = diccionarioController.deletTermino(idTermino);
+		diccionarioController.deletTermino(idTermino);
 		verify(service).deleteById(idTermino);
 
 	}
