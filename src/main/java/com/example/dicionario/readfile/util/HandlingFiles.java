@@ -110,7 +110,7 @@ public class HandlingFiles {
 	}
 
 	/**
-	 * Oredena la información con respecto a su Key.
+	 * Oredena la informacion con respecto a su Key.
 	 * 
 	 * @param data the data
 	 * @return object Map
