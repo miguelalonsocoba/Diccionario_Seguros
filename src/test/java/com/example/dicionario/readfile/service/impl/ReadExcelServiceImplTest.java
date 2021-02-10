@@ -87,5 +87,14 @@ class ReadExcelServiceImplTest {
 		System.out.println(result.toString());
 		assertEquals(true, result.containsValue(valorEsperado));
 	}
+	
+	@Test
+	void readExcelTestParamNull() {
+		try {
+			service.readExcel(null);
+		} catch (Exception e) {
+			assertEquals("Param fileLocation es null", e.getMessage());
+		}
+	}
 
 }
