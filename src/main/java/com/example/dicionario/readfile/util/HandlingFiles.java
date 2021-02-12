@@ -36,19 +36,20 @@ public class HandlingFiles {
 	 * @param fileLocation
 	 * @return
 	 */
-	public Workbook openFile(String fileLocation) {
+	public Workbook openFile(String fileLocation) throws FileNotFoundException {
 		log.info("HandlingFiles >>>>> openFile() - Parameter: {}", fileLocation);
-		Workbook workbook; // Libro de Trabjo.
+		Workbook workbook = null; // Libro de Trabjo.
 		try (FileInputStream file = new FileInputStream(new File(fileLocation))) {
 			workbook = new XSSFWorkbook(file);
 			log.info("HandlingFiles <<<<< openFile() - Return; {}", workbook.getActiveSheetIndex());
-			return workbook;
 		} catch (FileNotFoundException e) {
 			log.error("FileNotFoundException: {}", e.getMessage());
+			throw new FileNotFoundException(
+					String.format("No se encontro el archivo en la ruta especificada: %s", fileLocation));
 		} catch (IOException e) {
 			log.error("IOException: {}", e.getMessage());
 		}
-		return null;
+		return workbook;
 	}
 
 	/**
@@ -56,7 +57,7 @@ public class HandlingFiles {
 	 * 
 	 * @param workbook the workbook
 	 */
-	public Map<Integer, List<String>> retrieveFirstSheet(final Workbook workbook) {
+	public Map<Integer, List<String>> retrieveFirstSheet(final Workbook workbook) throws Exception {
 		log.info("HandlingFiles >>>>> retrieveFirstSheet() - Param: {}", workbook.toString());
 
 		Sheet sheet = workbook.getSheetAt(0);// Se obtiene la primera hoja del archivo Excel.
@@ -75,7 +76,8 @@ public class HandlingFiles {
 					}
 					break;
 				default:
-					// data.get(new Integer(i)).add(" ");
+					log.error(String.format("El tipo de celda no es String: %s", cell.getCellType()));
+					break;
 				}
 			}
 			data.put(i - 3, valoresFila);

@@ -1,5 +1,6 @@
 package com.example.dicionario.readfile.service;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,9 @@ public interface IReadExcelService {
 	 * 
 	 * @param fileLocation the fileLocation
 	 * @return object Map
+	 * @throws FileNotFoundException 
+	 * @throws Exception 
 	 */
-	Map<Integer, List<String>> readExcel(String fileLocation);
+	Map<Integer, List<String>> readExcel(String fileLocation) throws Exception;
 
 }

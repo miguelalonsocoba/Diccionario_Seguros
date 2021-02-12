@@ -34,9 +34,10 @@ class ReadExcelControllerTest {
 
 	/**
 	 * Comprueba que no retorna un valor vacio o null.
+	 * @throws Exception 
 	 */
 	@Test
-	void readExcelTestNotNull() {
+	void readExcelTestNotNull() throws Exception {
 		Map<Integer, List<String>> responseService = new HashedMap<>();
 		List<String> responseList = new ArrayList<>();
 		responseList.add("Example");
@@ -52,9 +53,10 @@ class ReadExcelControllerTest {
 
 	/**
 	 * Comprueba que retorna una Key esperada.
+	 * @throws Exception 
 	 */
 	@Test
-	void readExcelTestRetornaKeyEsperadoOK() {
+	void readExcelTestRetornaKeyEsperadoOK() throws Exception {
 		Map<Integer, List<String>> responseService = new HashedMap<>();
 		List<String> responseList = new ArrayList<>();
 		responseList.add("Example");
@@ -70,9 +72,10 @@ class ReadExcelControllerTest {
 
 	/**
 	 * Comprueba que retorna un valor esperado.
+	 * @throws Exception 
 	 */
 	@Test
-	void readExcelTestRetornaValueEsperadoOK() {
+	void readExcelTestRetornaValueEsperadoOK() throws Exception {
 		Map<Integer, List<String>> responseService = new HashedMap<>();
 		List<String> responseList = new ArrayList<>();
 		responseList.add("Example");
@@ -87,9 +90,10 @@ class ReadExcelControllerTest {
 
 	/**
 	 * Comprueba que devuelve un error cuando el request es nulo.
+	 * @throws Exception 
 	 */
 	@Test
-	void readExcelTestErrorNullPointerException() {
+	void readExcelTestErrorNullPointerException() throws Exception {
 
 		try {
 			readExcelController.readExcel(null);
@@ -100,9 +104,10 @@ class ReadExcelControllerTest {
 	
 	/**
 	 * Comprueba que si el atributo fileLocation es null retorna un NullPointerException.
+	 * @throws Exception 
 	 */
 	@Test
-	void readExcelTestErrorParamNull() {
+	void readExcelTestErrorParamNull() throws Exception {
 		ReadFileExcelRequest request = new ReadFileExcelRequest(null);
 		
 		try {

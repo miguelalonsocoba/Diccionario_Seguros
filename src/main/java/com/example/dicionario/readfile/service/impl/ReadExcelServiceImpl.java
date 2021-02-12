@@ -29,9 +29,10 @@ public class ReadExcelServiceImpl implements IReadExcelService {
 
 	/**
 	 * Lee un archivo excel.
+	 * @throws Exception 
 	 */
 	@Override
-	public Map<Integer, List<String>> readExcel(final String fileLocation) {
+	public Map<Integer, List<String>> readExcel(final String fileLocation) throws Exception {
 		log.info("ReadExcelServiceImpl >>>>> readExcel() - Parameter: {}", fileLocation);
 		Optional<String> fileLocationO = Optional.ofNullable(fileLocation);
 		fileLocationO.orElseThrow(() -> new NullPointerException(String.format("Param %s es null", "fileLocation")));
