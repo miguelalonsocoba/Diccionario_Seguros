@@ -7,7 +7,8 @@ jacocoTestReport {
 	        	'com/example/dicionario/exceptions/**',
       			'com/example/dicionario/util/exceptions/**',
       			'com/example/dicionario/entity/**',
-      			'com/example/dicionario/DiccionarioSegurosApplication**'
+      			'com/example/dicionario/DiccionarioSegurosApplication**',
+      			'com/example/dicionario/readfile/request/ReadFileExcelRequest**'
 
 	      ])
         }))
@@ -32,7 +33,8 @@ jacocoTestCoverageVerification {
       	'com.example.dicionario.exceptions*',
       	'com.example.dicionario.util.exceptions*',
       	'com.example.dicionario.entity*',
-      	'com.example.dicionario.DiccionarioSegurosApplication'
+      	'com.example.dicionario.DiccionarioSegurosApplication',
+      	'com.example.dicionario.readfile.request*'
       ]
     }
   }

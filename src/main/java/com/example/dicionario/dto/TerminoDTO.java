@@ -26,7 +26,6 @@ public class TerminoDTO {
 	private String ejemplo;
 
 	/** The categoria. */
-
 	private String categoria;
 
 }
