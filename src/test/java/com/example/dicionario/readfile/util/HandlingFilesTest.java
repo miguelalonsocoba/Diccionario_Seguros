@@ -19,14 +19,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class HandlingFilesTest {
+class HandlingFilesTest {
 
 	@InjectMocks
 	private HandlingFiles handlingFiles;
 
 	@Mock
 	private OPCPackage opcPachage;
-	
+
 	@Mock
 	private Cell cell;
 
@@ -74,10 +74,11 @@ public class HandlingFilesTest {
 			assertEquals("No se encontro el archivo en la ruta especificada: ruta ejemplo", e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Comprueba que el valor que retorna no es nulo.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	void retriverFirstSheetTestReturnNotNull() throws Exception {
@@ -87,16 +88,17 @@ public class HandlingFilesTest {
 		} catch (FileNotFoundException e) {
 			System.err.println("FileNotFoundException: " + e.getMessage());
 		}
-		
-		Map<Integer, List<String>> response =  handlingFiles.retrieveFirstSheet(responseW);
-		
+
+		Map<Integer, List<String>> response = handlingFiles.retrieveFirstSheet(responseW);
+
 		assertNotNull(response);
-		
+
 	}
-	
+
 	/**
 	 * Comprueba que recupera el valor de la Key esperado.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	void retriverFirstSheetTestValorEsperadoKey() throws Exception {
@@ -106,14 +108,15 @@ public class HandlingFilesTest {
 		} catch (FileNotFoundException e) {
 			System.err.println("FileNotFoundException: " + e.getMessage());
 		}
-		
-		Map<Integer, List<String>> response =  handlingFiles.retrieveFirstSheet(responseW);
+
+		Map<Integer, List<String>> response = handlingFiles.retrieveFirstSheet(responseW);
 		assertTrue(response.containsKey(1));
 	}
-	
+
 	/**
 	 * Comprueba que recupera el valor esperado.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	void retriverFirstSheetTestValorEsperadoValue() throws Exception {
@@ -123,14 +126,16 @@ public class HandlingFilesTest {
 		} catch (FileNotFoundException e) {
 			System.err.println("FileNotFoundException: " + e.getMessage());
 		}
-		
-		Map<Integer, List<String>> response =  handlingFiles.retrieveFirstSheet(responseW);
+
+		Map<Integer, List<String>> response = handlingFiles.retrieveFirstSheet(responseW);
 		assertEquals("Ejemplo1", response.get(1).get(0));
 	}
-	
+
 	/**
-	 * Comprueba que entra en el default del case cuando la celda no es de tipo String.
-	 * @throws Exception 
+	 * Comprueba que entra en el default del case cuando la celda no es de tipo
+	 * String.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	void restriverFirstSheetTestValorCeldaInt() throws Exception {
@@ -140,14 +145,16 @@ public class HandlingFilesTest {
 		} catch (FileNotFoundException e) {
 			System.err.println("FileNotFoundException: " + e.getMessage());
 		}
-		
-		Map<Integer, List<String>> response =  handlingFiles.retrieveFirstSheet(responseW);
+
+		Map<Integer, List<String>> response = handlingFiles.retrieveFirstSheet(responseW);
 		assertNotNull(response);
 	}
-	
+
 	/**
-	 * Comprueba que entra en el default del case cuando la celda no es de tipo String.
-	 * @throws Exception 
+	 * Comprueba que entra en el default del case cuando la celda no es de tipo
+	 * String.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	void restriverFirstSheetTestValorCeldaNull() throws Exception {
@@ -157,8 +164,8 @@ public class HandlingFilesTest {
 		} catch (FileNotFoundException e) {
 			System.err.println("FileNotFoundException: " + e.getMessage());
 		}
-		
-		Map<Integer, List<String>> response =  handlingFiles.retrieveFirstSheet(responseW);
+
+		Map<Integer, List<String>> response = handlingFiles.retrieveFirstSheet(responseW);
 		assertNotNull(response);
 	}
 }

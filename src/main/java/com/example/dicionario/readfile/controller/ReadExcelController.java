@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.bouncycastle.jcajce.provider.asymmetric.dsa.DSASigner.detDSA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +16,7 @@ import com.example.dicionario.controller.DiccionarioController;
 import com.example.dicionario.dto.TerminoDTO;
 import com.example.dicionario.readfile.request.ReadFileExcelRequest;
 import com.example.dicionario.readfile.service.IReadExcelService;
-import com.fasterxml.jackson.core.io.DataOutputAsStream;
+import com.example.dicionario.readfile.util.Converter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,9 +36,12 @@ public class ReadExcelController {
 	private IReadExcelService service;
 
 	/** The diccionarioController. */
+	private DiccionarioController diccionarioController = new DiccionarioController();
+
+	/** The converter. */
 	@Autowired
-	private DiccionarioController diccionarioController;
-	
+	private Converter converter;
+
 	/** The terminos. */
 	private List<List<String>> terminos = new ArrayList<>();
 
@@ -59,22 +61,11 @@ public class ReadExcelController {
 			throw new Exception(e.getMessage());
 		}
 		log.info("Obteniendo terminos para realizar la carga masiva.");
-		response.entrySet().forEach( e -> terminos.add(e.getValue()));
+		response.entrySet().forEach(e -> terminos.add(e.getValue()));
 		log.info("Terminos Obtenidos: {}", terminos);
-		List<TerminoDTO> terminoDTOList = converterListStringToTerminoDTO(terminos);
+		List<TerminoDTO> terminoDTOList = converter.converterListStringToTerminoDTO(terminos);
 		diccionarioController.bulkLoad(terminoDTOList, "false");
 		log.info("ReadExcelController <<<<< readExcel() - Response: {}", response);
-		return response;
-	}
-	
-	private List<TerminoDTO> converterListStringToTerminoDTO(List<List<String>> data) {
-		log.info("ReadExcelController >>>>> converterListStringToTerminoDTO() - Parameter: {}", data.toString());
-		List<TerminoDTO> response = new ArrayList<>();
-		data.stream().forEach( e -> {
-			log.info("Convirtiendo la lista de tipo String a un objeto TerminoDTO. Lista: {}", e.toString());
-			response.add(new TerminoDTO(e.get(0), e.get(1), e.get(2), e.get(3)));
-		});
-		log.info("ReadExcelController <<<<< convertListStringToTerminoDTO() - Response: {}", response.toString());
 		return response;
 	}
 

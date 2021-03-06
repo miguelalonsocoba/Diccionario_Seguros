@@ -16,8 +16,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.example.dicionario.controller.DiccionarioController;
+import com.example.dicionario.dto.TerminoDTO;
+import com.example.dicionario.entity.response.ResponseBulkLoad;
 import com.example.dicionario.readfile.request.ReadFileExcelRequest;
 import com.example.dicionario.readfile.service.IReadExcelService;
+import com.example.dicionario.readfile.util.Converter;
 
 class ReadExcelControllerTest {
 
@@ -26,6 +30,12 @@ class ReadExcelControllerTest {
 
 	@Mock
 	private IReadExcelService readExcelService;
+	
+	@Mock
+	private Converter converter;
+	
+	@Mock
+	private DiccionarioController diccionarioController;
 
 	@BeforeEach
 	void setUp() {
@@ -80,11 +90,18 @@ class ReadExcelControllerTest {
 		List<String> responseList = new ArrayList<>();
 		responseList.add("Example");
 		responseService.put(1, responseList);
+		
+		List<TerminoDTO> terminoDTOs = new ArrayList<>();
+		terminoDTOs.add(new TerminoDTO("Example1", "Example1", "Example1", "Example1"));
+		
 		when(readExcelService.readExcel(ArgumentMatchers.anyString())).thenReturn(responseService);
+		when(converter.converterListStringToTerminoDTO(ArgumentMatchers.anyList())).thenReturn(terminoDTOs);
+		when(diccionarioController.bulkLoad(ArgumentMatchers.anyList(), ArgumentMatchers.anyString())).thenReturn(ArgumentMatchers.any(ResponseBulkLoad.class));
 
 		ReadFileExcelRequest request = new ReadFileExcelRequest("Example");
 
 		Map<Integer, List<String>> response = readExcelController.readExcel(request);
+		System.out.println(response);
 		assertEquals(response.toString(), response.toString());
 	}
 

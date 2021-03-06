@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.example.dicionario.dto.TerminoDTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -18,6 +20,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class ResponseBulkLoad {
 
 	/** Dataos cargados. */
